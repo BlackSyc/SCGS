@@ -1,5 +1,5 @@
 {
-  "name": "aether.unity.syc",
+  "name": "com.unity.syc",
   "version": "0.0.1",
   "displayName": "Syc",
   "description": "A collection of core game logic for a spell-based RPG.",
