@@ -1,0 +1,19 @@
+{
+  "name": "aether.unity.syc",
+  "version": "0.0.1",
+  "displayName": "Syc",
+  "description": "A collection of core game logic for a spell-based RPG.",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "keywords": [
+    "keyword1",
+    "keyword2",
+    "keyword3"
+  ],
+  "author": {
+    "name": "Syc",
+    "email": "marcvandeuren@gmail.com",
+    "url": "https://www.unity3d.com"
+  },
+  "type": "library"
+}

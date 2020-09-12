@@ -1,0 +1,15 @@
+{
+    "name": "Syc.Movement",
+    "references": [
+        "GUID:8338c5e4d7337b34394c9cae81eba266"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
