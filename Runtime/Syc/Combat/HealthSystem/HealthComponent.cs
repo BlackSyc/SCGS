@@ -9,6 +9,8 @@ namespace Syc.Combat.HealthSystem
 		public event Action<DamageRequest> OnDied;
 		public event Action<DamageRequest> OnDamageReceived;
 		public event Action<HealRequest> OnHealingReceived;
+
+		public event Action<float> OnHealthChanged;
 		
 		public ICombatSystem System { get; set; }
 
@@ -32,6 +34,7 @@ namespace Syc.Combat.HealthSystem
 			{
 				damageRequest.AmountDealt = damageAmount;
 				OnDamageReceived?.Invoke(damageRequest);
+				OnHealthChanged?.Invoke(CurrentHealth);
 				return damageAmount;
 			}
 
@@ -39,6 +42,7 @@ namespace Syc.Combat.HealthSystem
 			currentHealth = 0;
 			damageRequest.AmountDealt = actualDamageDealt;
 			OnDamageReceived?.Invoke(damageRequest);
+			OnHealthChanged?.Invoke(CurrentHealth);
 			OnDied?.Invoke(damageRequest);
 			return actualDamageDealt;
 		}
@@ -55,6 +59,7 @@ namespace Syc.Combat.HealthSystem
 			{
 				healRequest.AmountDealt = healAmount;
 				OnHealingReceived?.Invoke(healRequest);
+				OnHealthChanged?.Invoke(CurrentHealth);
 				return healAmount;
 			}
 
@@ -62,7 +67,14 @@ namespace Syc.Combat.HealthSystem
 			currentHealth = MaxHealth;
 			healRequest.AmountDealt = actualHealAmount;
 			OnHealingReceived?.Invoke(healRequest);
+			OnHealthChanged?.Invoke(CurrentHealth);
 			return actualHealAmount;
+		}
+
+		public void Reset()
+		{
+			currentHealth += MaxHealth;
+			OnHealthChanged?.Invoke(CurrentHealth);
 		}
 		
 		public void Update(float deltaTime) { }
