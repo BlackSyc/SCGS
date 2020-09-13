@@ -1,3 +1,19 @@
-﻿{
-	"name": "Syc"
+{
+    "name": "Syc",
+    "references": [
+        "GUID:abbb46728c7ceb0459bc42227cfc5677",
+        "GUID:8338c5e4d7337b34394c9cae81eba266",
+        "GUID:a42bdbf0f7a535145ab4c5810df7cace",
+        "GUID:93e77602360a03b438201d846a17f7ee",
+        "GUID:78069420aeefe844e8681f5f103c6190"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
