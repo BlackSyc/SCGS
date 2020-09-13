@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5e89aaaadbd02e4393182b9711a402a, type: 3}
+  m_Name: Missile
+  m_EditorClassIdentifier: 
+  spellName: Missile
+  spellDescription: A simple projectile dealing damage on impact with its target.
+  castTime: 2
+  coolDown: 5
+  targetProvider: {fileID: 11400000, guid: 86176881863ca474985c8d22da8aa988, type: 2}
+  castingRequirements: []
+  startCastHandlers:
+  - {fileID: 11400000, guid: d4224951e2ac49a4f85ab5d66c1d2e30, type: 2}
+  updateCastHandlers: []
+  completeCastHandlers: []
+  cancelCastHandlers: []
+  spellHitHandlers:
+  - {fileID: 11400000, guid: b8b3f7ec773fea04f9c434c77ff0459f, type: 2}

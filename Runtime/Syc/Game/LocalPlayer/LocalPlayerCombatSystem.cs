@@ -8,7 +8,7 @@ namespace Syc.Game.LocalPlayer
 {
 	public class LocalPlayerCombatSystem : CombatSystem
 	{
-		[SerializeField] private InputSystem inputSystem;
+		[SerializeField] private PlayerInput playerInput;
 		public override object Allegiance => gameObject.layer;
 		public override ICombatAttributes AttributeSystem => defaultAttributesSystem;
 		public override Transform Origin => transform;
@@ -30,13 +30,13 @@ namespace Syc.Game.LocalPlayer
 			AddSubsystem(healthComponent);
 			AddSubsystem(modifierComponent);
 
-			inputSystem.OnCastSpell += spellComponent.CastSpell;
-			inputSystem.OnMove += _ => spellComponent.MovementIntterupt();
+			playerInput.OnCastSpell += spellComponent.CastSpell;
+			playerInput.OnMove += _ => spellComponent.MovementIntterupt();
 		}
 
 		private void OnDestroy()
 		{
-			inputSystem.OnCastSpell -= spellComponent.CastSpell;
+			playerInput.OnCastSpell -= spellComponent.CastSpell;
 		}
 	}
 }

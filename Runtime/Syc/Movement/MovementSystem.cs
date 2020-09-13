@@ -19,7 +19,7 @@ namespace Syc.Movement
         #endregion
 
         #region MonoBehaviour
-        private void Awake()
+        private void Start()
         {
             _characterController = GetComponent<CharacterController>();
         }

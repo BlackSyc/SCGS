@@ -9,6 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c941b1ed8944a0969faa64e2e667d1, type: 3}
-  m_Name: No Target
+  m_Script: {fileID: 11500000, guid: b6ea688588a34e00aa01a45349044c25, type: 3}
+  m_Name: MissileDamage
   m_EditorClassIdentifier: 
+  damageAmount: 10
+  criticalStrikeMultiplier: 2
+  allowDamageMitigation: 1
+  applyAttributeBias: 1

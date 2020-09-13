@@ -28,6 +28,7 @@ namespace Syc.Game
 		public Attribute MovementSpeed => movementSpeed;
 
 		public Attribute JumpPower => movementSpeed;
+		
 		public Attribute RotationSpeed => Settings.MouseSensitivity;
 	}
 }

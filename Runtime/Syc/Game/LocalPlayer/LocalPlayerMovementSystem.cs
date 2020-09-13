@@ -11,7 +11,7 @@ namespace Syc.Game.LocalPlayer
 
         [SerializeField] private DefaultAttributesSystem movementDefaultAttributes;
 
-        [SerializeField] private InputSystem input;
+        [SerializeField] private PlayerInput playerInput;
 
         #endregion
 
@@ -21,18 +21,18 @@ namespace Syc.Game.LocalPlayer
 
         private void Awake()
         {
-            input.OnMove += Move;
-            input.OnLook += Rotate;
-            input.OnLook += RotateCameraPivot;
-            input.OnJump += Jump;
+            playerInput.OnMove += Move;
+            playerInput.OnLook += Rotate;
+            playerInput.OnLook += RotateCameraPivot;
+            playerInput.OnJump += Jump;
         }
 
         private void OnDestroy()
         {
-            input.OnMove -= Move;
-            input.OnLook -= Rotate;
-            input.OnLook -= RotateCameraPivot;
-            input.OnJump -= Jump;
+            playerInput.OnMove -= Move;
+            playerInput.OnLook -= Rotate;
+            playerInput.OnLook -= RotateCameraPivot;
+            playerInput.OnJump -= Jump;
         }
 
         #endregion
