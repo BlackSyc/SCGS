@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Aether.Input
+namespace Syc.Game.Input
 {
     [Serializable]
     public enum ActionMap

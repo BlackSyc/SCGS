@@ -1,5 +1,4 @@
 ﻿using System;
-using Aether.Input;
 using UnityEngine;
 
 namespace Syc.Game.Input
