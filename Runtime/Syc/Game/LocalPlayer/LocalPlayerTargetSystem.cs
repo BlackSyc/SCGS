@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Syc.Combat;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
@@ -16,12 +17,17 @@ namespace Syc.Game.LocalPlayer
 
 		public Target GetCurrentTarget()
 		{
-			if (Physics.Raycast(playerCamera.position, playerCamera.forward, out var hit, maxRange))
+			var hits = Physics.RaycastAll(playerCamera.position, playerCamera.forward, maxRange);
+			if (!hits.Any())
 			{
-				return new Target(hit.transform.gameObject);
+				return new TemporaryTarget(playerCamera.position + maxRange * playerCamera.forward);
 			}
-			
-			return new TemporaryTarget(playerCamera.position + maxRange * playerCamera.forward);
+
+			var hit = hits.First(x =>
+				x.transform.GetComponent<ICombatSystem>() == default ||
+				x.transform.GetComponent<ICombatSystem>().CanBeTargeted);
+			return new Target(hit.transform.gameObject);
+
 		}
 
 		public void LockTarget(Target target)

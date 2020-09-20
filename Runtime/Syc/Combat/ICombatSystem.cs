@@ -9,6 +9,8 @@ namespace Syc.Combat
 		ICombatAttributes AttributeSystem { get; }
 
 		Transform Origin { get; }
+		
+		bool CanBeTargeted { get; set; }
 
 		T Get<T>();
 

@@ -9,6 +9,8 @@ namespace Tests.Editor.Combat.SpellSystem.TestObjects
 		public override object Allegiance { get; }
 		public override ICombatAttributes AttributeSystem { get; }
 		public override Transform Origin { get; }
+		
+		public override bool CanBeTargeted { get; set; }
 
 		public TestCombatSystem(object allegiance, ICombatAttributes attributeSystem, Transform origin)
 		{

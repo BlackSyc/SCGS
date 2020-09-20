@@ -12,6 +12,8 @@ namespace Syc.Game.LocalPlayer
 		public override object Allegiance => gameObject.layer;
 		public override ICombatAttributes AttributeSystem => defaultAttributesSystem;
 		public override Transform Origin => transform;
+		
+		public override bool CanBeTargeted { get; set; }
 
 		[SerializeField] private LocalPlayerTargetSystem localPlayerTargetSystem;
 		

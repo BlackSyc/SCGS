@@ -8,6 +8,7 @@ namespace Syc.Combat
 		public abstract object Allegiance { get; }
 		public abstract ICombatAttributes AttributeSystem { get; }
 		public abstract Transform Origin { get; }
+		public abstract bool CanBeTargeted { get; set; }
 
 		protected void AddSubsystem(ISubSystem<ICombatSystem> subSystem)
 		{
