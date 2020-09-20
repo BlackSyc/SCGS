@@ -6,12 +6,11 @@ namespace Syc.Core.System
 {
 	public class MonoSystemBase : MonoSubSystem, ISystemBase
 	{
-		[SerializeField]
-		private List<ISubSystem> subsystems = new List<ISubSystem>();
+		private List<ISubSystem> _subsystems = new List<ISubSystem>();
 
 		public T Get<T>()
 		{
-			return subsystems.OfType<T>().SingleOrDefault();
+			return _subsystems.OfType<T>().SingleOrDefault();
 		}
 
 		public bool Has<T>(out T t)
@@ -22,16 +21,16 @@ namespace Syc.Core.System
 
 		public bool Has<T>()
 		{
-			return subsystems.OfType<T>().Any();
+			return _subsystems.OfType<T>().Any();
 		}
 
 		private void Update()
 		{
-			if (subsystems == default || !subsystems.Any())
+			if (_subsystems == default || !_subsystems.Any())
 				return;
 
 			var deltaTime = Time.deltaTime;
-			foreach (var subSystem in subsystems)
+			foreach (var subSystem in _subsystems)
 			{
 				subSystem.Tick(deltaTime);
 			}
@@ -42,12 +41,12 @@ namespace Syc.Core.System
 			if (subSystem == null)
 				return;
 
-			subsystems.Add(subSystem);
+			_subsystems.Add(subSystem);
 		}
 		
 		protected void RemoveSubsystem(ISubSystem subSystem)
 		{
-			subsystems.Remove(subSystem);
+			_subsystems.Remove(subSystem);
 		}
 
 		public override void Tick(float deltaTime) { }
