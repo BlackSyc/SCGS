@@ -9,7 +9,6 @@ namespace Syc.Combat.HealthSystem
 		public event Action<DamageRequest> OnDied;
 		public event Action<DamageRequest> OnDamageReceived;
 		public event Action<HealRequest> OnHealingReceived;
-
 		public event Action<float> OnHealthChanged;
 		
 		public ICombatSystem System { get; set; }
@@ -78,10 +77,10 @@ namespace Syc.Combat.HealthSystem
 
 		public void Reset()
 		{
-			currentHealth += MaxHealth;
+			currentHealth = MaxHealth;
 			OnHealthChanged?.Invoke(CurrentHealth);
 		}
 		
-		public void Update(float deltaTime) { }
+		public void Tick(float deltaTime) { }
 	}
 }

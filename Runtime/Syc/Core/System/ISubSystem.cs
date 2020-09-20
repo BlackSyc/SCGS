@@ -2,7 +2,7 @@
 {
 	public interface ISubSystem
 	{
-		void Update(float deltaTime);
+		void Tick(float deltaTime);
 	}
 	
 	public interface ISubSystem<T> : ISubSystem

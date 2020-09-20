@@ -36,6 +36,6 @@ namespace Syc.Game.LocalPlayer
 		}
 
 		public ICombatSystem System { get; set; }
-		public void Update(float deltaTime) { }
+		public void Tick(float deltaTime) { }
 	}
 }

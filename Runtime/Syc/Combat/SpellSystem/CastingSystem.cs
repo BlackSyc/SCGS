@@ -44,7 +44,7 @@ namespace Syc.Combat.SpellSystem
 
 		public ICombatSystem System { get; set; }
 
-		public void Update(float deltaTime)
+		public void Tick(float deltaTime)
 		{
 			CurrentSpellCast?.Update(deltaTime);
 		}

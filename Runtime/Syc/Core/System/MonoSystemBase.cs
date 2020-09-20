@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Syc.Core.System
 {
-	public class MonoSystemBase : MonoBehaviour, ISystemBase
+	public class MonoSystemBase : MonoSubSystem, ISystemBase
 	{
 		private readonly List<ISubSystem> _subsystems = new List<ISubSystem>();
 
@@ -32,7 +33,7 @@ namespace Syc.Core.System
 			var deltaTime = Time.deltaTime;
 			foreach (var subSystem in _subsystems)
 			{
-				subSystem.Update(deltaTime);
+				subSystem.Tick(deltaTime);
 			}
 		}
 
@@ -48,5 +49,12 @@ namespace Syc.Core.System
 		{
 			_subsystems.Remove(subSystem);
 		}
+
+		public override void Tick(float deltaTime) { }
+	}
+
+	public class MonoSystemBase<T> : MonoSystemBase, ISubSystem<T>
+	{
+		public T System { get; set; }
 	}
 }

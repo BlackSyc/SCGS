@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Syc.Core.System
 {
-	public class SystemBase : ISystemBase
+	public class SystemBase : ISystemBase, ISubSystem
 	{
 		private readonly List<ISubSystem> _subsystems = new List<ISubSystem>();
 
@@ -32,7 +33,7 @@ namespace Syc.Core.System
 			var deltaTime = Time.deltaTime;
 			foreach (var subSystem in _subsystems)
 			{
-				subSystem.Update(deltaTime);
+				subSystem.Tick(deltaTime);
 			}
 		}
 
@@ -48,5 +49,12 @@ namespace Syc.Core.System
 		{
 			_subsystems.Remove(subSystem);
 		}
+
+		public virtual void Tick(float deltaTime) { }
+	}
+
+	public class SystemBase<T> : SystemBase, ISubSystem<T>
+	{
+		public T System { get; set; }
 	}
 }

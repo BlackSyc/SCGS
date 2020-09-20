@@ -22,7 +22,7 @@ namespace Syc.Combat.ModifierSystem
 			return newModifier;
 		}
 
-		public void Update(float deltaTime)
+		public void Tick(float deltaTime)
 		{
 			foreach (var activeModifier in _activeModifiers)
 			{
