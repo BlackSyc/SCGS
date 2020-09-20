@@ -16,7 +16,16 @@ namespace Syc.Movement
         #region Public Properties
         public abstract IMovementAttributes MovementAttributes { get; }
 
+        public bool IsActive
+        {
+            get => isActive;
+            set => isActive = value;
+        }
+
         #endregion
+
+        [SerializeField]
+        private bool isActive = true;
 
         #region MonoBehaviour
         private void Start()
@@ -28,6 +37,9 @@ namespace Syc.Movement
         #region Public Methods
         public void Move(Vector2 movementInput)
         {
+            if (!IsActive)
+                return;
+            
             var ownTransform = transform;
             var localMovement = (ownTransform.right * movementInput.x 
                                  + ownTransform.forward * movementInput.y) * MovementAttributes.MovementSpeed.Remap();
@@ -45,12 +57,18 @@ namespace Syc.Movement
 
         public void Jump()
         {
+            if (!IsActive)
+                return;
+
             if (_characterController.isGrounded)
                 _upwardsMovement = MovementAttributes.JumpPower.Remap();
         }
 
         public void Rotate(Vector2 rotationInput)
         {
+            if (!IsActive)
+                return;
+
             var ownTransform = transform;
             var localRotation = (ownTransform.up * rotationInput.x + ownTransform.right * rotationInput.y) * MovementAttributes.RotationSpeed.Remap();
             transform.Rotate(localRotation * Time.deltaTime, Space.World);
