@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
 namespace Syc.Core.System
 {
 	public class MonoSystemBase : MonoSubSystem, ISystemBase
 	{
-		private readonly List<ISubSystem> _subsystems = new List<ISubSystem>();
+		[SerializeField]
+		private List<ISubSystem> subsystems = new List<ISubSystem>();
 
 		public T Get<T>()
 		{
-			return _subsystems.OfType<T>().SingleOrDefault();
+			return subsystems.OfType<T>().SingleOrDefault();
 		}
 
 		public bool Has<T>(out T t)
@@ -22,16 +22,16 @@ namespace Syc.Core.System
 
 		public bool Has<T>()
 		{
-			return _subsystems.OfType<T>().Any();
+			return subsystems.OfType<T>().Any();
 		}
 
 		private void Update()
 		{
-			if (_subsystems == default || !_subsystems.Any())
+			if (subsystems == default || !subsystems.Any())
 				return;
 
 			var deltaTime = Time.deltaTime;
-			foreach (var subSystem in _subsystems)
+			foreach (var subSystem in subsystems)
 			{
 				subSystem.Tick(deltaTime);
 			}
@@ -42,12 +42,12 @@ namespace Syc.Core.System
 			if (subSystem == null)
 				return;
 
-			_subsystems.Add(subSystem);
+			subsystems.Add(subSystem);
 		}
 		
 		protected void RemoveSubsystem(ISubSystem subSystem)
 		{
-			_subsystems.Remove(subSystem);
+			subsystems.Remove(subSystem);
 		}
 
 		public override void Tick(float deltaTime) { }
