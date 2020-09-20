@@ -27,6 +27,10 @@ namespace Syc.Movement
         [SerializeField]
         private bool isActive = true;
 
+        [SerializeField] private bool disablePitchRotation;
+
+        [SerializeField] private bool disableYawRotation;
+
         #region MonoBehaviour
         private void Start()
         {
@@ -70,7 +74,17 @@ namespace Syc.Movement
                 return;
 
             var ownTransform = transform;
+            
+            if (disableYawRotation)
+                rotationInput.x = 0;
+
+            if (disablePitchRotation)
+                rotationInput.y = 0;
+            
             var localRotation = (ownTransform.up * rotationInput.x + ownTransform.right * rotationInput.y) * MovementAttributes.RotationSpeed.Remap();
+
+
+            
             transform.Rotate(localRotation * Time.deltaTime, Space.World);
         }
         #endregion
