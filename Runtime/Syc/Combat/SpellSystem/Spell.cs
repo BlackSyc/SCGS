@@ -44,7 +44,5 @@ namespace Syc.Combat.SpellSystem
 		}
 
 		private void StartCoolDown(SpellCast spellCast) => CoolDownUntil = Time.time + spellBehaviour.CoolDown;
-		
-		
 	}
 }
