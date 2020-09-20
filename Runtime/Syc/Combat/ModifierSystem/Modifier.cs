@@ -7,10 +7,12 @@ namespace Syc.Combat.ModifierSystem
 		public ModifierBehaviour ModifierBehaviour => _modifierBehaviour;
 		
 		public bool TimeIsElapsed { get; private set; }
+
+		public float ActiveDuration => _activeDuration;
 		
 		private ModifierBehaviour _modifierBehaviour;
 
-		private float _activeDuration = 0;
+		private float _activeDuration;
 
 		public Modifier(ModifierBehaviour modifierBehaviour)
 		{
