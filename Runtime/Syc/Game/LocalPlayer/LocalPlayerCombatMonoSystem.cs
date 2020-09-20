@@ -19,7 +19,7 @@ namespace Syc.Game.LocalPlayer
 
 		[SerializeField] private HealthSystem healthSystem;
 
-		[SerializeField] private ModifierComponent modifierComponent;
+		[SerializeField] private ModifierSystem modifierSystem;
 
 		[SerializeField] private DefaultAttributesSystem defaultAttributesSystem;
 
@@ -28,7 +28,7 @@ namespace Syc.Game.LocalPlayer
 			AddSubsystem(localPlayerTargetSystem);
 			AddSubsystem(spellComponent);
 			AddSubsystem(healthSystem);
-			AddSubsystem(modifierComponent);
+			AddSubsystem(modifierSystem);
 
 			playerInput.OnCastSpell += spellComponent.CastSpell;
 			playerInput.OnMove += _ => spellComponent.MovementIntterupt();
