@@ -1,6 +1,6 @@
 {
   "name": "com.aether.syc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "displayName": "Syc",
   "description": "A collection of core game logic for a spell-based RPG.",
   "unity": "2019.1",
