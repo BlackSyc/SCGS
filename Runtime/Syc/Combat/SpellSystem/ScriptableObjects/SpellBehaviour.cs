@@ -12,6 +12,10 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 	[CreateAssetMenu(menuName = "Spell System/Spell Behaviour")]
 	public class SpellBehaviour : ScriptableObject
 	{
+		public string SpellName => spellName;
+
+		public string SpellDescription => spellDescription;
+		
 		public float CastTime => castTime;
 
 		public float CoolDown => coolDown;
