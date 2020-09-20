@@ -13,11 +13,11 @@ namespace Syc.Combat.SpellSystem
 		public event Action<Spell, int> OnSpellRemoved;
 		
 		[SerializeField]
-		private List<Spell> spells;
+		private Spell[] spells;
 
 		public void CastSpell(int spellIndex)
 		{
-			if (spellIndex > spells.Count)
+			if (spellIndex > spells.Length)
 				return;
 
 			CastSpell(spells[spellIndex]);
@@ -31,22 +31,14 @@ namespace Syc.Combat.SpellSystem
 			return newSpell;
 		}
 
-		public Spell AddSpell(SpellBehaviour spellBehaviour)
-		{
-			var newSpell = new Spell(spellBehaviour);
-			spells.Add(newSpell);
-			OnSpellAdded?.Invoke(newSpell, spells.IndexOf(newSpell));
-			return newSpell;
-		}
-
 		public void RemoveAll(SpellBehaviour spellBehaviour)
 		{
 			var spellsToRemove = spells.Where(x => x.SpellBehaviour == spellBehaviour);
 
 			foreach (var spell in spellsToRemove)
 			{
-				var index = spells.IndexOf(spell);
-				spells.RemoveAt(index);
+				var index = Array.IndexOf(spells, spell);
+				spells[index] = default;
 				OnSpellRemoved?.Invoke(spell, index);
 			}
 		}
