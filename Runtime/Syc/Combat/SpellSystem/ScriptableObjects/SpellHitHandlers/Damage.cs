@@ -24,7 +24,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellHitHandlers
 			if (!target.IsCombatTarget)
 				return;
 
-			if (!target.CombatSystem.Has(out HealthComponent healthComponent))
+			if (!target.CombatSystem.Has(out HealthSystem.HealthSystem healthComponent))
 				return;
 
 			if (applyAttributeBias)

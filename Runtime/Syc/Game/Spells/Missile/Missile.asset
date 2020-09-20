@@ -16,10 +16,10 @@ MonoBehaviour:
   spellDescription: A simple projectile dealing damage on impact with its target.
   castTime: 2
   coolDown: 5
-  targetProvider: {fileID: 11400000, guid: 86176881863ca474985c8d22da8aa988, type: 2}
+  targetProvider: {fileID: 11400000, guid: 4a9d2b1348120534a88f347dcbee922f, type: 2}
   castingRequirements: []
   startCastHandlers:
-  - {fileID: 11400000, guid: d4224951e2ac49a4f85ab5d66c1d2e30, type: 2}
+  - {fileID: 11400000, guid: a2c6efbda91164b45aed7e9d54649cab, type: 2}
   updateCastHandlers: []
   completeCastHandlers: []
   cancelCastHandlers: []

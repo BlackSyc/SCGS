@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Core.System
 {
-	public class SystemBase : ISystemBase
+	public class MonoSystemBase : MonoBehaviour, ISystemBase
 	{
 		private readonly List<ISubSystem> _subsystems = new List<ISubSystem>();
 
@@ -24,7 +24,7 @@ namespace Syc.Core.System
 			return _subsystems.OfType<T>().Any();
 		}
 
-		public void Update()
+		private void Update()
 		{
 			if (_subsystems == default || !_subsystems.Any())
 				return;

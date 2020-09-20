@@ -5,11 +5,8 @@
 		void Update(float deltaTime);
 	}
 	
-	public interface ISubSystem<T>
+	public interface ISubSystem<T> : ISubSystem
 	{
 		T System { get; set; }
-		void Update(float deltaTime);
 	}
-
-
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Syc.Game.LocalPlayer
 {
-	public class LocalPlayerCombatSystem : CombatSystem
+	public class LocalPlayerCombatMonoSystem : CombatMonoSystem
 	{
 		[SerializeField] private PlayerInput playerInput;
 		public override object Allegiance => gameObject.layer;
@@ -17,7 +17,7 @@ namespace Syc.Game.LocalPlayer
 		
 		[SerializeField] private SpellRack spellComponent;
 
-		[SerializeField] private HealthComponent healthComponent;
+		[SerializeField] private HealthSystem healthSystem;
 
 		[SerializeField] private ModifierComponent modifierComponent;
 
@@ -27,7 +27,7 @@ namespace Syc.Game.LocalPlayer
 		{
 			AddSubsystem(localPlayerTargetSystem);
 			AddSubsystem(spellComponent);
-			AddSubsystem(healthComponent);
+			AddSubsystem(healthSystem);
 			AddSubsystem(modifierComponent);
 
 			playerInput.OnCastSpell += spellComponent.CastSpell;

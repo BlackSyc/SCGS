@@ -18,42 +18,42 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		
 		[Header("Spell Info")]
 		[SerializeField] 
-		private string spellName;
+		protected string spellName;
 
 		[SerializeField]
 		[TextArea(3,10)]
-		private string spellDescription;
+		protected string spellDescription;
 		
 		[Header("Properties")]
 		[SerializeField]
-		private float castTime;
+		protected float castTime;
 
 		[SerializeField] 
-		private float coolDown;
+		protected float coolDown;
 		
 		[Header("Before Cast")]
 		[SerializeField]
-		private TargetProvider targetProvider;
+		protected TargetProvider targetProvider;
 
 		[SerializeField]
-		private List<CastingRequirement> castingRequirements;
+		protected List<CastingRequirement> castingRequirements;
 
 		[Header("During Cast")]
 		[SerializeField] 
-		private List<CastHandler> startCastHandlers;
+		protected List<CastHandler> startCastHandlers;
 
 		[SerializeField] 
-		private List<CastHandler> updateCastHandlers;
+		protected List<CastHandler> updateCastHandlers;
 		
 		[SerializeField] 
-		private List<CastHandler> completeCastHandlers;
+		protected List<CastHandler> completeCastHandlers;
 		
 		[SerializeField] 
-		private List<CastHandler> cancelCastHandlers;
+		protected List<CastHandler> cancelCastHandlers;
 
 		[Header("After Cast")]
 		[SerializeField] 
-		private List<SpellHitHandler> spellHitHandlers;
+		protected List<SpellHitHandler> spellHitHandlers;
 
 		/// <summary>
 		/// Checks whether this spell could be cast at this moment.
@@ -65,7 +65,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		/// <returns></returns>
 		public GetSpellCastResult TryGetSpellCast(out SpellCast spellCast, ICaster caster)
 		{
-			var failedResult = castingRequirements
+			var failedResult = castingRequirements?
 				.Select(castingRequirement => castingRequirement.CanCast(caster, this))
 				.FirstOrDefault(result => !result.Success);
 
@@ -75,7 +75,9 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 				return failedResult;
 			}
 			
-			spellCast = new SpellCast(this, caster, targetProvider.GetTarget(caster));
+			spellCast = targetProvider != default 
+				? new SpellCast(this, caster, targetProvider.GetTarget(caster)) 
+				: new SpellCast(this, caster, default);
 			
 			return new GetSpellCastResult(true, this);
 		}

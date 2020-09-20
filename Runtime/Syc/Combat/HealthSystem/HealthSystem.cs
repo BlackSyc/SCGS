@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Syc.Combat.HealthSystem
 {
 	[Serializable]
-	public class HealthComponent : ICombatSubSystem
+	public class HealthSystem : ICombatSubSystem
 	{
 		public event Action<DamageRequest> OnDied;
 		public event Action<DamageRequest> OnDamageReceived;
@@ -16,10 +16,15 @@ namespace Syc.Combat.HealthSystem
 
 		public float MaxHealth => System.AttributeSystem?.Stamina.CurrentValue ?? 9999f;
 		public float CurrentHealth => currentHealth;
-		public bool IsDead => CurrentHealth == 0f;
+		public bool IsDead => CurrentHealth <= 0f;
 		
 		[SerializeField] 
 		private float currentHealth;
+
+		public HealthSystem(float currentHealth = 100f)
+		{
+			this.currentHealth = currentHealth;
+		}
 
 		public float Damage(DamageRequest damageRequest)
 		{

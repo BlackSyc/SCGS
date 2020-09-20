@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Syc.Combat
 {
-	public abstract class CombatSystem : SystemBase, ICombatSystem
+	public abstract class CombatMonoSystem : MonoSystemBase, ICombatSystem
 	{
 		public abstract object Allegiance { get; }
 		public abstract ICombatAttributes AttributeSystem { get; }
