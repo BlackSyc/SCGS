@@ -7,32 +7,35 @@ namespace Syc.Combat.SpellSystem
 	[Serializable]
 	public class Spell
 	{
-		private SpellBehaviour _spellBehaviour;
+		public SpellBehaviour SpellBehaviour => spellBehaviour;
+
+		public float CoolDownUntil => coolDownUntil;
 		
-		public SpellBehaviour SpellBehaviour => _spellBehaviour;
-		
-		public float CoolDownUntil { get; private set; }
+		[SerializeField]
+		private SpellBehaviour spellBehaviour;
+
+		[SerializeField] private float coolDownUntil;
 
 		public Spell(SpellBehaviour spellBehaviour)
 		{
-			_spellBehaviour = spellBehaviour;
+			this.spellBehaviour = spellBehaviour;
 		}
 		
 		public GetSpellCastResult TryGetSpellCast(out SpellCast spellCast, ICaster caster)
 		{
-			if (_spellBehaviour == default)
+			if (spellBehaviour == default)
 			{
 				spellCast = null;
-				return new GetSpellCastResult(false, _spellBehaviour, CastFailedReason.SpellNotFound);
+				return new GetSpellCastResult(false, spellBehaviour, CastFailedReason.SpellNotFound);
 			}
 			
 			if (CoolDownUntil > Time.time)
 			{
 				spellCast = null;
-				return new GetSpellCastResult(false, _spellBehaviour, CastFailedReason.OnCoolDown); 
+				return new GetSpellCastResult(false, spellBehaviour, CastFailedReason.OnCoolDown); 
 			}
 
-			var result = _spellBehaviour.TryGetSpellCast(out spellCast, caster);
+			var result = spellBehaviour.TryGetSpellCast(out spellCast, caster);
 
 			if (result.Success)
 			{
@@ -42,6 +45,6 @@ namespace Syc.Combat.SpellSystem
 			return result;
 		}
 
-		private void StartCoolDown(SpellCast spellCast) => CoolDownUntil = Time.time + _spellBehaviour.CoolDown;
+		private void StartCoolDown(SpellCast spellCast) => coolDownUntil = Time.time + spellBehaviour.CoolDown;
 	}
 }
