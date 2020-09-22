@@ -15,6 +15,13 @@ namespace Syc.Combat.SpellSystem
 		[SerializeField]
 		private Spell[] spells;
 
+		public Spell GetSpell(int index)
+		{
+			return index < spells.Length 
+				? spells[index] 
+				: default;
+		}
+
 		public void CastSpell(int spellIndex)
 		{
 			if (spellIndex > spells.Length)
