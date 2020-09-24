@@ -33,6 +33,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 		[SerializeField] 
 		protected float coolDown;
+
+		[SerializeField] protected bool globalCooldown;
 		
 		[Space]
 		[SerializeField]
@@ -55,6 +57,9 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		public CreateSpellCastResult TryCreateSpellCast(out SpellCast spellCast, ICaster caster, SpellState spellState)
 		{
 			spellCast = default;
+			
+			if(globalCooldown && caster.GlobalCooldownIsActive)
+				return CreateSpellCastResult.Failed(CastFailedReason.OnGlobalCoolDown, spellState);
 			
 			if (coolDown > 0 && spellState.CoolDownUntil > Time.time)
 				return CreateSpellCastResult.Failed(CastFailedReason.OnCoolDown, spellState);

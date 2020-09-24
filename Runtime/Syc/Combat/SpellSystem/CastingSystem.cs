@@ -17,8 +17,16 @@ namespace Syc.Combat.SpellSystem
 		
 		public SpellCast CurrentSpellCast { get; private set; }
 
+		public bool GlobalCooldownIsActive => globalCooldown == 0f || _timeSinceLastCast < GlobalCooldown;
+
+		public float GlobalCooldown => globalCooldown * System.AttributeSystem.Haste.Remap();
+
+		private float _timeSinceLastCast;
+
 		[SerializeField]
 		private Transform castOrigin;
+
+		[SerializeField] private float globalCooldown = 1f;
 
 		public void CastSpell(SpellState spellState)
 		{
@@ -48,6 +56,7 @@ namespace Syc.Combat.SpellSystem
 		
 		public void Tick(float deltaTime)
 		{
+			_timeSinceLastCast += deltaTime;
 			CurrentSpellCast?.Update(deltaTime);
 		}
 
@@ -55,6 +64,7 @@ namespace Syc.Combat.SpellSystem
 		{
 			CurrentSpellCast?.Cancel(CancelCastReason.CastReplaced);
 
+			newSpellCast.OnSpellCompleted += _ => _timeSinceLastCast = 0;
 			newSpellCast.OnSpellCompleted += RemoveCurrentSpellCast;
 			newSpellCast.OnSpellCancelled += RemoveCurrentSpellCast;
 

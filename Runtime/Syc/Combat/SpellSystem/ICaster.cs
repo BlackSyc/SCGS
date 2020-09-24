@@ -12,5 +12,7 @@ namespace Syc.Combat.SpellSystem
 		Transform CastOrigin { get; }
 
 		SpellCast CurrentSpellCast { get; }
+
+		bool GlobalCooldownIsActive { get; }
 	}
 }

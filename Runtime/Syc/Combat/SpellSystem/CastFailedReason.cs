@@ -4,6 +4,7 @@
 	{
 		InvalidTarget,
 		OnCoolDown,
+		OnGlobalCoolDown,
 		AlreadyCasting,
 		SpellNotFound,
 		Custom
