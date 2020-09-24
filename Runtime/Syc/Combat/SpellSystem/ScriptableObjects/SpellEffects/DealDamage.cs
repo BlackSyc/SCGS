@@ -47,7 +47,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 			var damageWithSpellPowerFactorApplied = spellPowerFactor * amount;
 
 			var criticalStrikeChance = caster.System.AttributeSystem.CriticalStrikeRating.Remap();
-			var randomFloat = Random.Range(0, 1);
+			var randomFloat = Random.Range(0, 100);
 
 			return randomFloat > criticalStrikeChance
 				? damageWithSpellPowerFactorApplied
