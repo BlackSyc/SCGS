@@ -6,6 +6,10 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 	// Assets have been created.
 	public class NoTarget : TargetProvider
 	{
-		public override Target CreateTarget(ICaster caster) => default;
+		public override bool HasValidTarget(ICaster caster, out Target target)
+		{
+			target = default;
+			return true;
+		}
 	}
 }

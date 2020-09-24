@@ -70,10 +70,13 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 			if (failedResult != null)
 				return failedResult;
-			
-			spellCast = target != default 
-				? new SpellCast(this, caster, target.CreateTarget(caster)) 
-				: new SpellCast(this, caster, default);
+
+			Target spellTarget = default;
+
+			if (target != null && !target.HasValidTarget(caster, out spellTarget))
+				return CreateSpellCastResult.Failed(CastFailedReason.InvalidTarget, spellState);
+
+			spellCast = new SpellCast(this, caster, spellTarget);
 			
 			return CreateSpellCastResult.Succeeded(spellState);
 		}

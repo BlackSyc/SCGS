@@ -15,33 +15,23 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 		public bool AllowFriendlyTargets => allowFriendlyTargets;
 		public bool AllowEnemyTargets => allowEnemyTargets;
 		public bool AllowNonCombatTargets => allowNonCombatTargets;
-		
-		public override Target CreateTarget(ICaster caster)
+
+		public override bool HasValidTarget(ICaster caster, out Target target)
 		{
-			if (!caster.System.Has(out ITargetManager targetManager))
-				return default;
+			target = default;
 			
-			var currentTarget = targetManager.CreateTarget();
+			if (!caster.System.Has(out ITargetManager targetManager))
+				return false;
+			
+			target = targetManager.CreateTarget();
+			
+			if (AllowNonCombatTargets && !target.IsCombatTarget)
+				return true;
 
-			if (AllowNonCombatTargets && !currentTarget.IsCombatTarget)
-			{
-				targetManager.LockTarget(currentTarget);
-				return currentTarget;
-			}
+			if (AllowEnemyTargets && target.IsEnemyTo(caster.System))
+				return true;
 
-			if (AllowEnemyTargets && currentTarget.IsEnemyTo(caster.System))
-			{
-				targetManager.LockTarget(currentTarget);
-				return currentTarget;
-			}
-
-			if (AllowFriendlyTargets && currentTarget.IsFriendlyTo(caster.System))
-			{
-				targetManager.LockTarget(currentTarget);
-				return currentTarget;
-			}
-
-			return currentTarget;
+			return AllowFriendlyTargets && target.IsFriendlyTo(caster.System);
 		}
 	}
 }

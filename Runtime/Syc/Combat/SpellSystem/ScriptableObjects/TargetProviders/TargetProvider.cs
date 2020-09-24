@@ -5,6 +5,6 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 {
 	public abstract class TargetProvider : ScriptableObject
 	{
-		public abstract Target CreateTarget(ICaster caster);
+		public abstract bool HasValidTarget(ICaster caster, out Target target);
 	}
 }
