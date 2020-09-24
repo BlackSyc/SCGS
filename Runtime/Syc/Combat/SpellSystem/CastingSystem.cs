@@ -8,8 +8,6 @@ namespace Syc.Combat.SpellSystem
 	{
 		public event Action<SpellCast> OnNewSpellCast;
 		public event Action<Spell, CastFailedReason> OnCastFailed;
-
-		public float GlobalCoolDownUntil { get; set; }
 		
 		public ICombatSystem System { get; set; }
 
