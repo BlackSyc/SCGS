@@ -4,15 +4,22 @@ namespace Syc.Combat.TargetSystem
 {
 	public class Target
 	{
-		public bool IsCombatTarget => GameObject.GetComponent<ICombatSystem>() != null;
+		public bool IsCombatTarget => TargetObject != null && TargetObject.GetComponent<ICombatSystem>() != null;
 		
-		public GameObject GameObject { get; }
+		public GameObject TargetObject { get; }
 
-		public ICombatSystem CombatSystem => GameObject.GetComponent<ICombatSystem>();
+		public ICombatSystem CombatSystem => TargetObject.GetComponent<ICombatSystem>();
 
-		public Target(GameObject gameObject)
+		public Vector3 Position => TargetObject == default
+			? _originalRelativePosition
+			: TargetObject.transform.position + _originalRelativePosition;
+
+		private Vector3 _originalRelativePosition;
+
+		public Target(GameObject targetObject, Vector3 exactWorldPosition)
 		{
-			GameObject = gameObject;
+			TargetObject = targetObject;
+			_originalRelativePosition = exactWorldPosition - targetObject.transform.position;
 		}
 		
 		public bool IsFriendlyTo(ICombatSystem combatSystem)
@@ -20,7 +27,7 @@ namespace Syc.Combat.TargetSystem
 			if (!IsCombatTarget)
 				return false;
 			
-			return combatSystem.Allegiance == GameObject.GetComponent<ICombatSystem>().Allegiance;
+			return combatSystem.Allegiance == TargetObject.GetComponent<ICombatSystem>().Allegiance;
 		}
 		
 		public bool IsEnemyTo(ICombatSystem combatSystem) => !IsFriendlyTo(combatSystem);

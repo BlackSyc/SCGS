@@ -6,6 +6,6 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 	// Assets have been created.
 	public class Self : TargetProvider
 	{
-		public override Target CreateTarget(ICaster caster) => new Target(caster.System.Origin.gameObject);
+		public override Target CreateTarget(ICaster caster) => new Target(caster.System.Origin.gameObject, caster.System.Origin.position);
 	}
 }

@@ -21,21 +21,21 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 			switch (at)
 			{
 				case TargetType.Target:
-					newSpellObject = Instantiate(spawn, target.GameObject.transform);
+					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
 					break;
 				case TargetType.SelfCastOrigin:
-					newSpellObject = Instantiate(spawn, target.GameObject.transform);
+					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
 					break;
 				case TargetType.SelfOrigin:
-					newSpellObject = Instantiate(spawn, target.GameObject.transform);
+					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
