@@ -19,7 +19,11 @@ namespace Syc.Combat.TargetSystem
 		public Target(GameObject targetObject, Vector3 exactWorldPosition)
 		{
 			TargetObject = targetObject;
-			_originalRelativePosition = exactWorldPosition - targetObject.transform.position;
+
+			if (TargetObject != default)
+				_originalRelativePosition = exactWorldPosition - targetObject.transform.position;
+			else
+				_originalRelativePosition = exactWorldPosition;
 		}
 		
 		public bool IsFriendlyTo(ICombatSystem combatSystem)
