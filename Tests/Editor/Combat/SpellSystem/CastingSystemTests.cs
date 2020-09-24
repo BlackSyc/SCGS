@@ -19,19 +19,19 @@ namespace Tests.Editor.Combat.SpellSystem
 			mockCombatSystem.Setup(x => x.Origin).Returns(new GameObject().transform);
 			mockCombatSystem.Setup(x => x.Get<ICaster>()).Returns(castingSystem);
 			
-			var testSpell = ScriptableObject.CreateInstance<TestSpellBehaviour>();
+			var testSpell = ScriptableObject.CreateInstance<TestSpell>();
 			testSpell.TargetProvider = ScriptableObject.CreateInstance<Self>();
 
 			SpellCast spellCast = null;
 			castingSystem.OnNewSpellCast += x => spellCast = x;
 			
 			// Act
-			castingSystem.CastSpell(new Spell(testSpell));
+			castingSystem.CastSpell(new SpellState(testSpell));
 			
 			// Assert
 			mockCombatSystem.Verify(x => x.Origin, Times.Exactly(1 ));
 			Assert.IsNotNull(spellCast);
-			Assert.AreEqual(spellCast.SpellBehaviour, testSpell);
+			Assert.AreEqual(spellCast.Spell, testSpell);
 		}
 	}
 }

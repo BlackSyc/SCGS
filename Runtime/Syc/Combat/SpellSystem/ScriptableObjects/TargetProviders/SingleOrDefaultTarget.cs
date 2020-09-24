@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 {
-	// [CreateAssetMenu(menuName = "Spell System/Target Providers/Single or default target")]
+	// [CreateAssetMenu(menuName = "SpellState System/TargetType Providers/Single or default target")]
 	// Assets have been created.
 	public class SingleOrDefaultTarget : TargetProvider
 	{
@@ -16,12 +16,12 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 		public bool AllowEnemyTargets => allowEnemyTargets;
 		public bool AllowNonCombatTargets => allowNonCombatTargets;
 		
-		public override Target GetTarget(ICaster caster)
+		public override Target CreateTarget(ICaster caster)
 		{
 			if (!caster.System.Has(out ITargetManager targetManager))
 				return default;
 			
-			var currentTarget = targetManager.GetCurrentTarget();
+			var currentTarget = targetManager.CreateTarget();
 
 			if (AllowNonCombatTargets && !currentTarget.IsCombatTarget)
 			{

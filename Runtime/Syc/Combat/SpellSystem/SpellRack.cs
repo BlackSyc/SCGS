@@ -9,13 +9,13 @@ namespace Syc.Combat.SpellSystem
 	[Serializable]
 	public class SpellRack : CastingSystem
 	{
-		public event Action<Spell, int> OnSpellAdded;
-		public event Action<Spell, int> OnSpellRemoved;
+		public event Action<SpellState, int> OnSpellAdded;
+		public event Action<SpellState, int> OnSpellRemoved;
 		
 		[SerializeField]
-		private Spell[] spells;
+		private SpellState[] spells;
 
-		public Spell GetSpell(int index)
+		public SpellState GetSpell(int index)
 		{
 			return index < spells.Length 
 				? spells[index] 
@@ -30,33 +30,33 @@ namespace Syc.Combat.SpellSystem
 			CastSpell(spells[spellIndex]);
 		}
 
-		public Spell AddSpell(SpellBehaviour spellBehaviour, int index)
+		public SpellState AddSpell(Spell spell, int index)
 		{
-			var newSpell = new Spell(spellBehaviour);
+			var newSpell = new SpellState(spell);
 			spells[index] = newSpell;
 			OnSpellAdded?.Invoke(newSpell, index);
 			return newSpell;
 		}
 
-		public void RemoveAll(SpellBehaviour spellBehaviour)
+		public void RemoveAll(Spell spell)
 		{
-			var spellsToRemove = spells.Where(x => x.SpellBehaviour == spellBehaviour);
+			var spellStatesToRemove = spells.Where(x => x.Spell == spell);
 
-			foreach (var spell in spellsToRemove)
+			foreach (var spellState in spellStatesToRemove)
 			{
-				var index = Array.IndexOf(spells, spell);
+				var index = Array.IndexOf(spells, spellState);
 				spells[index] = default;
-				OnSpellRemoved?.Invoke(spell, index);
+				OnSpellRemoved?.Invoke(spellState, index);
 			}
 		}
 
 		public void RemoveAllSpells()
 		{
-			var spellsCopy = new List<Spell>(spells);
+			var spellsCopy = new List<SpellState>(spells);
 
 			foreach (var spell in spellsCopy)
 			{
-				RemoveAll(spell.SpellBehaviour);
+				RemoveAll(spell.Spell);
 			}
 		}
 

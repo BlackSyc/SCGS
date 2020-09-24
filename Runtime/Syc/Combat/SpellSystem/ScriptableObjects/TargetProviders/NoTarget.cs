@@ -2,10 +2,10 @@
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders
 {
-	// [CreateAssetMenu(menuName = "Spell System/Target Providers/No target")]
+	// [CreateAssetMenu(menuName = "SpellState System/TargetType Providers/No target")]
 	// Assets have been created.
 	public class NoTarget : TargetProvider
 	{
-		public override Target GetTarget(ICaster caster) => default;
+		public override Target CreateTarget(ICaster caster) => default;
 	}
 }

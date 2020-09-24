@@ -19,15 +19,15 @@ namespace Syc.Combat.SpellSystem
 		
 
 		public float CurrentCastTime;
-		public SpellBehaviour SpellBehaviour { get; }
+		public Spell Spell { get; }
 		public Target Target { get; }
 		public ICaster Caster { get; }
 		
-		public SpellCast(SpellBehaviour spellBehaviour, 
+		public SpellCast(Spell spell, 
 			ICaster caster,
 			Target target)
 		{
-			SpellBehaviour = spellBehaviour;
+			Spell = spell;
 			Caster = caster;
 			Target = target;
 		}
@@ -39,18 +39,18 @@ namespace Syc.Combat.SpellSystem
 			
 			if (!SpellCastStarted)
 			{
-				SpellBehaviour.StartCast(this);
+				Spell.StartCast(this);
 				SpellCastStarted = true;
 				OnSpellCastStarted?.Invoke(this);
 			}
 
-			CurrentCastTime += deltaTime * Caster.System.AttributeSystem.Haste.CurrentValue;
-			SpellBehaviour.UpdateCast(this);
+			CurrentCastTime += deltaTime * Caster.System.AttributeSystem.Haste.Remap();
+			Spell.UpdateCast(this);
 			OnSpellCastProgress?.Invoke(this);
 
-			if (CurrentCastTime >= SpellBehaviour.CastTime)
+			if (CurrentCastTime >= Spell.CastTime)
 			{
-				SpellBehaviour.CompleteCast(this);
+				Spell.CompleteCast(this);
 				SpellCastCompleted = true;
 				OnSpellCompleted?.Invoke(this);
 			}
@@ -59,7 +59,7 @@ namespace Syc.Combat.SpellSystem
 		public void Cancel(CancelCastReason reason)
 		{
 			CancelCastReason = reason;
-			SpellBehaviour.CancelCast(this);
+			Spell.CancelCast(this);
 			SpellCastCancelled = true;
 			OnSpellCancelled?.Invoke(this);
 		}

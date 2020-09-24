@@ -1,10 +1,14 @@
 ﻿using Syc.Combat.SpellSystem.ScriptableObjects;
+using Syc.Combat.TargetSystem;
 using UnityEngine;
 
 namespace Syc.Combat.SpellSystem
 {
 	public abstract class SpellObject : MonoBehaviour
 	{
-		public virtual SpellBehaviour Spell { get; set; }
+		public ICaster Source { get; set; }
+		public Target Target { get; set; }
+		public SpellCast SpellCast { get; set; }
+		public Spell Spell { get; set; }
 	}
 }

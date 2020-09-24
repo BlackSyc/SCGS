@@ -2,7 +2,7 @@
 {
 	public interface ITargetManager : ICombatSubSystem
 	{
-		Target GetCurrentTarget();
+		Target CreateTarget();
 		void LockTarget(Target target);
 		
 	}

@@ -6,7 +6,7 @@ namespace Tests.Editor.Combat.SpellSystem
 {
 	public class TestTargetProvider : TargetProvider
 	{
-		public override Target GetTarget(ICaster caster)
+		public override Target CreateTarget(ICaster caster)
 		{
 			throw new System.NotImplementedException();
 		}

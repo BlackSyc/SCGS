@@ -2,28 +2,28 @@
 
 namespace Syc.Combat.ModifierSystem
 {
-	public class Modifier
+	public class ModifierState
 	{
-		public ModifierBehaviour ModifierBehaviour => _modifierBehaviour;
+		public Modifier Modifier => _modifier;
 		
 		public bool TimeIsElapsed { get; private set; }
 
 		public float ActiveDuration => _activeDuration;
 		
-		private ModifierBehaviour _modifierBehaviour;
+		private Modifier _modifier;
 
 		private float _activeDuration;
 
-		public Modifier(ModifierBehaviour modifierBehaviour)
+		public ModifierState(Modifier modifier)
 		{
-			_modifierBehaviour = modifierBehaviour;
+			_modifier = modifier;
 		}
 
 		public void Update(float deltaTime)
 		{
 			_activeDuration += deltaTime;
 
-			if (_activeDuration >= _modifierBehaviour.Duration)
+			if (_activeDuration >= _modifier.Duration)
 				TimeIsElapsed = true;
 		}
 	}

@@ -7,7 +7,11 @@ namespace Syc.Combat.SpellSystem
 	public class CastingSystem : ICaster
 	{
 		public event Action<SpellCast> OnNewSpellCast;
-		public event Action<SpellBehaviour, CastFailedReason> OnCastFailed;
+		public event Action<Spell, CastFailedReason> OnCastFailed;
+
+		public float GlobalCoolDownUntil { get; set; }
+		
+		public ICombatSystem System { get; set; }
 
 		public Transform CastOrigin => castOrigin;
 		
@@ -16,15 +20,15 @@ namespace Syc.Combat.SpellSystem
 		[SerializeField]
 		private Transform castOrigin;
 
-		public void CastSpell(Spell spell)
+		public void CastSpell(SpellState spellState)
 		{
-			if (spell == default)
+			if (spellState == default)
 			{
 				OnCastFailed?.Invoke(null, CastFailedReason.SpellNotFound);
 				return;
 			}
 
-			var result = spell.TryGetSpellCast(out var newSpellCast,this);
+			var result = spellState.TryCreateSpellCast(out var newSpellCast,this);
 
 			if (result.Success)
 			{
@@ -33,7 +37,7 @@ namespace Syc.Combat.SpellSystem
 			}
 			else
 			{
-				OnCastFailed?.Invoke(result.Spell, result.Reason.GetValueOrDefault());
+				OnCastFailed?.Invoke(result.SpellState.Spell, result.Reason.GetValueOrDefault());
 			}	
 		}
 
@@ -41,9 +45,7 @@ namespace Syc.Combat.SpellSystem
 		{
 			CurrentSpellCast?.Cancel(CancelCastReason.Movement);
 		}
-
-		public ICombatSystem System { get; set; }
-
+		
 		public void Tick(float deltaTime)
 		{
 			CurrentSpellCast?.Update(deltaTime);

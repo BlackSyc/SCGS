@@ -8,15 +8,15 @@ namespace Syc.Combat.ModifierSystem
 	[Serializable]
 	public class ModifierSystem : ICombatSubSystem
 	{
-		public event Action<Modifier> OnModifierAdded;
-		public event Action<Modifier> OnModifierRemoved;
+		public event Action<ModifierState> OnModifierAdded;
+		public event Action<ModifierState> OnModifierRemoved;
 		public ICombatSystem System { get; set; }
 
-		private List<Modifier> _activeModifiers = new List<Modifier>();
+		private List<ModifierState> _activeModifiers = new List<ModifierState>();
 
-		public Modifier AddModifier(ModifierBehaviour modifierBehaviour)
+		public ModifierState AddModifier(Modifier modifier)
 		{
-			var newModifier = new Modifier(modifierBehaviour);
+			var newModifier = new ModifierState(modifier);
 			_activeModifiers.Add(newModifier);
 			OnModifierAdded?.Invoke(newModifier);
 			return newModifier;

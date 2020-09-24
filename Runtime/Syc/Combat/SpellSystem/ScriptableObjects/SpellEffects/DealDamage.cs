@@ -2,10 +2,10 @@
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
-namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellHitHandlers
+namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 {
-	[CreateAssetMenu(menuName = "Spell System/Spell Hit Handlers/Damage")]
-	public class Damage : SpellHitHandler
+	[CreateAssetMenu(menuName = "SpellState System/Effects/Deal Damage")]
+	public class DealDamage : SpellEffect
 	{
 		[SerializeField] 
 		private float damageAmount;
@@ -19,7 +19,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellHitHandlers
 		[SerializeField] 
 		private bool applyAttributeBias;
 		
-		public override void SpellHit(ICaster caster, Target target)
+		public override void Execute(ICaster caster, Target target, Spell spell, SpellCast spellCast = default, SpellObject spellObject = default)
 		{
 			if (!target.IsCombatTarget)
 				return;

@@ -7,7 +7,7 @@ namespace Syc.Combat.SpellSystem
 	public interface ICaster : ICombatSubSystem
 	{
 		event Action<SpellCast> OnNewSpellCast;
-		event Action<SpellBehaviour, CastFailedReason> OnCastFailed;
+		event Action<Spell, CastFailedReason> OnCastFailed;
 		
 		Transform CastOrigin { get; }
 
