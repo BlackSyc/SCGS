@@ -57,7 +57,9 @@ namespace Syc.Combat.ModifierSystem
 				activeModifier.Update(deltaTime);
 			}
 
-			var completeModifiers =  _activeModifiers.Where(x => x.Stacks >= 1);
+			var completeModifiers =  _activeModifiers
+				.Where(x => x.Stacks >= 1)
+				.ToList();
 
 			foreach (var completeModifier in completeModifiers)
 			{
