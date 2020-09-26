@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem
 {
+	[Serializable]
 	public class CastingSystem : ICaster
 	{
 		public event Action<SpellCast> OnNewSpellCast;
