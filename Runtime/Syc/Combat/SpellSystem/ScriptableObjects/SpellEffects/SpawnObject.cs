@@ -22,6 +22,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 			{
 				case TargetType.Target:
 					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
+					newSpellObject.transform.position = target.Position;
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
