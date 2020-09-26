@@ -19,6 +19,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 		public float CoolDown => coolDown;
 
+		public bool CastWhileMoving => castWhileMoving;
+
 		public IEnumerable<SpellEffect> SpellEffects => spellEffects;
 		
 		[SerializeField] 
@@ -37,6 +39,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		protected float coolDown;
 
 		[SerializeField] protected bool globalCooldown;
+
+		[SerializeField] protected bool castWhileMoving;
 		
 		[Space]
 		[SerializeField]

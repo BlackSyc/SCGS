@@ -34,6 +34,16 @@ namespace Syc.Combat.SpellSystem
 				OnCastFailed?.Invoke(null, CastFailedReason.SpellNotFound);
 				return;
 			}
+			
+			if (CurrentSpellCast != null)
+			{
+				if (CurrentSpellCast.Spell == spellState.Spell)
+				{
+					OnCastFailed?.Invoke(spellState.Spell, CastFailedReason.AlreadyCasting);
+					return;
+				}
+				CurrentSpellCast.Cancel(CancelCastReason.CastReplaced);
+			}
 
 			var result = spellState.TryCreateSpellCast(out var newSpellCast,this);
 
@@ -50,6 +60,12 @@ namespace Syc.Combat.SpellSystem
 
 		public void MovementIntterupt()
 		{
+			if (CurrentSpellCast?.Spell == null)
+				return;
+
+			if (CurrentSpellCast.Spell.CastWhileMoving)
+				return;
+			
 			CurrentSpellCast?.Cancel(CancelCastReason.Movement);
 		}
 		
