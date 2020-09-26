@@ -28,14 +28,14 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 					newSpellObject.Spell = spell;
 					break;
 				case TargetType.SelfCastOrigin:
-					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
+					newSpellObject = Instantiate(spawn, source.CastOrigin);
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
 					break;
 				case TargetType.SelfOrigin:
-					newSpellObject = Instantiate(spawn, target.TargetObject.transform);
+					newSpellObject = Instantiate(spawn, source.System.Origin);
 					newSpellObject.Source = source;
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
