@@ -22,7 +22,16 @@ namespace Syc.Core.Attributes
 			get
 			{
 				var currentValue = baseValue + _additionChain.Sum(addition => addition.Addition);
-				return _multiplierChain.Aggregate(currentValue, (current, multiplier) => current * multiplier.Multiplier);
+
+				if (_multiplierChain.Any())
+				{
+					foreach (var multiplier in _multiplierChain)
+					{
+						currentValue *= multiplier.Multiplier;
+					}
+				}
+				
+				return currentValue;
 			}
 		}
 
