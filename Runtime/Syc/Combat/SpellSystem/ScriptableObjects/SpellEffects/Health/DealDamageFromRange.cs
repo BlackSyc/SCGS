@@ -7,8 +7,17 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Deal Damage From Range")]
 	public class DealDamageFromRange : DealDamage
 	{
+		public float DamageCeiling => damageCeiling;
+
 		[SerializeField] protected float damageCeiling;
 		
+		public virtual float CalculateDamageCeilingWith(ICombatAttributes attributes)
+		{
+			return affectedBySpellPower
+				? DamageCeiling * attributes.SpellPower.Remap()
+				: DamageCeiling;
+		}
+
 		protected override DamageRequest CreateDamageRequest(
 			ICaster caster,
 			Target target,
@@ -20,10 +29,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			var isCriticalStrike = false;
 			var damageAmountFromRange = Random.Range(0f, 1f) * (damageCeiling - damageAmount) + damageAmount;
 
-			if (applyAttributeBias)
-			{
+			if (affectedBySpellPower)
 				attributeMultiplier *= caster.System.AttributeSystem.SpellPower.Remap();
-
+		
+			if(canCrit)
+			{
 				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap())
 				{
 					isCriticalStrike = true;

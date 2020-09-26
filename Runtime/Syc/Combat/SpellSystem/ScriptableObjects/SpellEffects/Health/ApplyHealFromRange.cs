@@ -7,7 +7,17 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Apply Heal From Range")]
 	public class ApplyHealFromRange : ApplyHeal
 	{
+		public float HealCeiling => healCeiling;
+
 		[SerializeField] protected float healCeiling;
+
+		public virtual float CalculateHealCeilingWith(ICombatAttributes attributes)
+		{
+			return affectedBySpellPower
+				? HealCeiling * attributes.SpellPower.Remap()
+				: HealCeiling;
+		}
+		
 		protected override HealRequest CreateHealRequest(
 			ICaster caster, 
 			Target target, 
@@ -19,10 +29,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			var isCriticalStrike = false;
 			var healAmountFromRange = Random.Range(0f, 1f) * (healCeiling - healAmount) + healAmount;
 
-			if (applyAttributeBias)
-			{
+			if (affectedBySpellPower)
 				attributeMultiplier *= caster.System.AttributeSystem.SpellPower.Remap();
-
+			
+			if(canCrit)
+			{
 				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap())
 				{
 					isCriticalStrike = true;

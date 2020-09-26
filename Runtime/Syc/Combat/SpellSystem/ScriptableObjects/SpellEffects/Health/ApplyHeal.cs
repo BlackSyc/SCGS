@@ -7,14 +7,15 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Apply Heal")]
 	public class ApplyHeal : SpellEffect
 	{
-		[SerializeField] 
-		protected float healAmount;
+		public float HealAmount => healAmount;
+		public bool CanCrit => canCrit;
+		public float CriticalStrikeMultiplier => criticalStrikeMultiplier;
+		public bool AffectedBySpellPower => affectedBySpellPower;
 
-		[SerializeField] 
-		protected float criticalStrikeMultiplier = 2;
-
-		[SerializeField] 
-		protected bool applyAttributeBias;
+		[SerializeField] protected float healAmount;
+		[SerializeField] protected bool canCrit;
+		[SerializeField] protected float criticalStrikeMultiplier = 2;
+		[SerializeField] protected bool affectedBySpellPower;
 		
 		public override void Execute(ICaster caster, Target target, Spell spell, SpellCast spellCast = default,
 			SpellObject spellObject = default)
@@ -28,6 +29,13 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			healthComponent.Heal(CreateHealRequest(caster, target, spell, spellCast, spellObject));
 		}
 		
+		public virtual float CalculateHealAmountWith(ICombatAttributes combatAttributes)
+		{
+			return affectedBySpellPower
+				? HealAmount * combatAttributes.SpellPower.Remap()
+				: HealAmount;
+		}
+		
 		protected virtual HealRequest CreateHealRequest(
 			ICaster caster, 
 			Target target, 
@@ -38,10 +46,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
 
-			if (applyAttributeBias)
-			{
+			if (affectedBySpellPower)
 				attributeMultiplier *= caster.System.AttributeSystem.SpellPower.Remap();
 
+			if(canCrit)
+			{
 				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap())
 				{
 					isCriticalStrike = true;
