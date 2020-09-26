@@ -29,7 +29,7 @@ namespace Syc.Combat.ModifierSystem
 		public ModifierState(ICaster source, ICombatSystem target, Modifier modifier, object referenceObject)
 		{
 			ModifierType = modifier;
-			_modifierStack.Add(0);
+			_modifierStack.Add(Time.time);
 			_source = source;
 			_referenceObject = referenceObject;
 			_target = target;

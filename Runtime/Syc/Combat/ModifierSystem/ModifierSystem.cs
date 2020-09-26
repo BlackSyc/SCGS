@@ -58,7 +58,7 @@ namespace Syc.Combat.ModifierSystem
 			}
 
 			var completeModifiers =  _activeModifiers
-				.Where(x => x.Stacks >= 1)
+				.Where(x => x.Stacks < 1)
 				.ToList();
 
 			foreach (var completeModifier in completeModifiers)
