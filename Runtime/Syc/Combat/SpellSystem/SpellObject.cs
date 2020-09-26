@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem
 {
-	public abstract class SpellObject : MonoBehaviour
+	public class SpellObject : MonoBehaviour
 	{
 		public ICaster Source { get; set; }
 		public Target Target { get; set; }
