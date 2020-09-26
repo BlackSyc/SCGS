@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
-	[CreateAssetMenu(menuName = "SpellState System/")]
 	public class Modifier : ScriptableObject
 	{
 		public string ModifierName => modifierName;

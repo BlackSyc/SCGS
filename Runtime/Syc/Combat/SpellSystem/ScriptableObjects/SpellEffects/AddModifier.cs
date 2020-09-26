@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 {
-	[CreateAssetMenu(menuName = "SpellState System/Effects/Add ModifierState")]
+	[CreateAssetMenu(menuName = "Spell System/Effects/Add Modifier")]
 	public class AddModifier : SpellEffect
 	{
 		[SerializeField] private Modifier modifier;

@@ -2,24 +2,22 @@
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
-namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
+namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 {
-	[CreateAssetMenu(menuName = "SpellState System/Effects/Deal Damage")]
-	public class DealDamage : SpellEffect
+	[CreateAssetMenu(menuName = "Spell System/Effects/Health/Apply Heal")]
+	public class ApplyHeal : SpellEffect
 	{
 		[SerializeField] 
-		protected float damageAmount;
+		protected float healAmount;
 
 		[SerializeField] 
 		protected float criticalStrikeMultiplier = 2;
 
 		[SerializeField] 
-		protected bool allowDamageMitigation;
-
-		[SerializeField] 
 		protected bool applyAttributeBias;
 		
-		public override void Execute(ICaster caster, Target target, Spell spell, SpellCast spellCast = default, SpellObject spellObject = default)
+		public override void Execute(ICaster caster, Target target, Spell spell, SpellCast spellCast = default,
+			SpellObject spellObject = default)
 		{
 			if (!target.IsCombatTarget)
 				return;
@@ -27,10 +25,10 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 			if (!target.CombatSystem.Has(out HealthSystem.HealthSystem healthComponent))
 				return;
 
-			healthComponent.Damage(CreateDamageRequest(caster, target, spell, spellCast, spellObject));
+			healthComponent.Heal(CreateHealRequest(caster, target, spell, spellCast, spellObject));
 		}
-
-		protected virtual DamageRequest CreateDamageRequest(
+		
+		protected virtual HealRequest CreateHealRequest(
 			ICaster caster, 
 			Target target, 
 			Spell spell, 
@@ -51,14 +49,12 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 				}
 			}
 
-			var damageSource = caster.System.Origin.gameObject;
+			var healingSource = caster.System.Origin.gameObject;
 
-			return new DamageRequest(damageAmount * attributeMultiplier,
+			return new HealRequest(healAmount * attributeMultiplier,
 				isCriticalStrike,
-				damageSource,
-				allowDamageMitigation
-					? DamageRequest.WithMitigation
-					: DamageRequest.NoMitigation);
+				healingSource,
+				HealRequest.DefaultHealCalculator);
 		}
 	}
 }

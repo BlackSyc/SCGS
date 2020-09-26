@@ -7,6 +7,8 @@ namespace Syc.Combat.HealthSystem
 	{
 		public float BaseAmount { get; }
 		
+		public bool IsCriticalStrike { get; }
+		
 		public GameObject Cause { get; }
 		
 		public float CalculatedAmount { get; private set; }
@@ -15,9 +17,10 @@ namespace Syc.Combat.HealthSystem
 		
 		public Func<ICombatAttributes, float, float> HealCalculator { get; }
 
-		public HealRequest(float baseAmount, GameObject cause, Func<ICombatAttributes, float, float> healCalculator)
+		public HealRequest(float baseAmount, bool isCriticalStrike, GameObject cause, Func<ICombatAttributes, float, float> healCalculator)
 		{
 			BaseAmount = baseAmount;
+			IsCriticalStrike = isCriticalStrike;
 			Cause = cause;
 			HealCalculator = healCalculator;
 		}

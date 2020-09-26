@@ -10,6 +10,8 @@ namespace Syc.Movement
         private CharacterController _characterController;
 
         private float _upwardsMovement;
+
+        private Vector2 _movementInput = Vector2.zero;
         
         #endregion
 
@@ -36,17 +38,15 @@ namespace Syc.Movement
         {
             _characterController = GetComponent<CharacterController>();
         }
-        #endregion
 
-        #region Public Methods
-        public void Move(Vector2 movementInput)
+        private void Update()
         {
             if (!IsActive)
                 return;
             
             var ownTransform = transform;
-            var localMovement = (ownTransform.right * movementInput.x 
-                                 + ownTransform.forward * movementInput.y) * MovementAttributes.MovementSpeed.Remap();
+            var localMovement = (ownTransform.right * _movementInput.x 
+                                 + ownTransform.forward * _movementInput.y) * MovementAttributes.MovementSpeed.Remap();
 
             localMovement.y = _upwardsMovement;
 
@@ -56,7 +56,13 @@ namespace Syc.Movement
             _upwardsMovement = localMovement.y;
 
             _characterController.Move(localMovement * Time.fixedDeltaTime);
+        }
+        #endregion
 
+        #region Public Methods
+        public void Move(Vector2 movementInput)
+        {
+            _movementInput = movementInput;
         }
 
         public void Jump()

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects
 {
-	[CreateAssetMenu(menuName = "SpellState System/Spell")]
+	[CreateAssetMenu(menuName = "Spell System/Spell")]
 	public class Spell : ScriptableObject
 	{
 		public string SpellName => spellName;
