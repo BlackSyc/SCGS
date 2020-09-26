@@ -13,7 +13,7 @@ namespace Syc.Combat.HealthSystem
 		
 		public ICombatSystem System { get; set; }
 
-		public float MaxHealth => System.AttributeSystem?.Stamina.CurrentValue ?? 9999f;
+		public float MaxHealth => System.AttributeSystem?.Stamina.Remap() ?? 9999f;
 		public float CurrentHealth => currentHealth;
 		public bool IsDead => CurrentHealth <= 0f;
 		

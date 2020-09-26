@@ -8,16 +8,16 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 	public class DealDamage : SpellEffect
 	{
 		[SerializeField] 
-		private float damageAmount;
+		protected float damageAmount;
 
 		[SerializeField] 
-		private float criticalStrikeMultiplier = 2;
+		protected float criticalStrikeMultiplier = 2;
 
 		[SerializeField] 
-		private bool allowDamageMitigation;
+		protected bool allowDamageMitigation;
 
 		[SerializeField] 
-		private bool applyAttributeBias;
+		protected bool applyAttributeBias;
 		
 		public override void Execute(ICaster caster, Target target, Spell spell, SpellCast spellCast = default, SpellObject spellObject = default)
 		{
@@ -27,31 +27,38 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 			if (!target.CombatSystem.Has(out HealthSystem.HealthSystem healthComponent))
 				return;
 
-			if (applyAttributeBias)
-			{
-				healthComponent.Damage(
-					new DamageRequest(
-						CalculateDamageWithAttributeBias(damageAmount, caster), 
-						caster.System.Origin.gameObject,
-						allowDamageMitigation ? DamageRequest.WithMitigation : DamageRequest.NoMitigation));
-			}
-			else
-			{
-				healthComponent.Damage(new DamageRequest(damageAmount, caster.System.Origin.gameObject, allowDamageMitigation ? DamageRequest.WithMitigation : DamageRequest.NoMitigation));
-			}
+			healthComponent.Damage(CreateDamageRequest(caster, target, spell, spellCast, spellObject));
 		}
 
-		protected virtual float CalculateDamageWithAttributeBias(float amount, ICaster caster)
+		protected virtual DamageRequest CreateDamageRequest(
+			ICaster caster, 
+			Target target, 
+			Spell spell, 
+			SpellCast spellCast = default, 
+			SpellObject spellObject = default)
 		{
-			var spellPowerFactor = caster.System.AttributeSystem.SpellPower.Remap();
-			var damageWithSpellPowerFactorApplied = spellPowerFactor * amount;
+			var attributeMultiplier = 1f;
+			var isCriticalStrike = false;
 
-			var criticalStrikeChance = caster.System.AttributeSystem.CriticalStrikeRating.Remap();
-			var randomFloat = Random.Range(0, 100);
+			if (applyAttributeBias)
+			{
+				attributeMultiplier *= caster.System.AttributeSystem.SpellPower.Remap();
 
-			return randomFloat > criticalStrikeChance
-				? damageWithSpellPowerFactorApplied
-				: damageWithSpellPowerFactorApplied * criticalStrikeMultiplier;
+				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap())
+				{
+					isCriticalStrike = true;
+					attributeMultiplier *= criticalStrikeMultiplier;
+				}
+			}
+
+			var damageSource = caster.System.Origin.gameObject;
+
+			return new DamageRequest(damageAmount * attributeMultiplier,
+				isCriticalStrike,
+				damageSource,
+				allowDamageMitigation
+					? DamageRequest.WithMitigation
+					: DamageRequest.NoMitigation);
 		}
 	}
 }

@@ -4,17 +4,21 @@ namespace Syc.Combat.TargetSystem
 {
 	public class Target
 	{
-		public bool IsCombatTarget => TargetObject != null && TargetObject.GetComponent<ICombatSystem>() != null;
+		public bool IsCombatTarget => TargetObject != null 
+		                              && TargetObject.GetComponent<ICombatSystem>() != null 
+		                              && TargetObject.GetComponent<ICombatSystem>().CanBeTargeted;
 		
 		public GameObject TargetObject { get; }
 
-		public ICombatSystem CombatSystem => TargetObject.GetComponent<ICombatSystem>();
+		public ICombatSystem CombatSystem => TargetObject.GetComponent<ICombatSystem>() != null && TargetObject.GetComponent<ICombatSystem>().CanBeTargeted 
+			? TargetObject.GetComponent<ICombatSystem>()
+			: default;
 
 		public Vector3 Position => TargetObject == default
 			? _originalRelativePosition
 			: TargetObject.transform.position + _originalRelativePosition;
 
-		private Vector3 _originalRelativePosition;
+		private readonly Vector3 _originalRelativePosition;
 
 		public Target(GameObject targetObject, Vector3 exactWorldPosition)
 		{
