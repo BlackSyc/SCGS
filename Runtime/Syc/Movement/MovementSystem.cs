@@ -56,6 +56,8 @@ namespace Syc.Movement
             _upwardsMovement = localMovement.y;
 
             _characterController.Move(localMovement * Time.fixedDeltaTime);
+            
+            _movementInput = Vector2.zero;
         }
         #endregion
 
