@@ -1,7 +1,8 @@
-﻿using Syc.Combat;
-using Syc.Core.Attributes;
+﻿using System;
+using Syc.Combat;
+using Attribute = Syc.Core.Attributes.Attribute;
 
-namespace Tests.Editor.Combat
+namespace Tests.Editor.Combat.SpellSystem.TestObjects
 {
 	public class TestAttributesSystem : ICombatAttributes
 	{
@@ -27,6 +28,11 @@ namespace Tests.Editor.Combat
 			Haste = new Attribute();
 			CriticalStrikeRating = new Attribute();
 			Armor = new Attribute();
+		}
+
+		public Attribute Get(string attributeName)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

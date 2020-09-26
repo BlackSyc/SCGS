@@ -21,6 +21,7 @@
 		/// Creates a new instance of <see cref="AttributeMultiplier"/>.
 		/// </summary>
 		/// <param name="multiplier">The amount that will be multiplied with the passed value in <see cref="Modify"/>.</param>
-		public AttributeMultiplier(float multiplier) => Multiplier = multiplier;
+		/// <param name="referenceObject"></param>
+		public AttributeMultiplier(float multiplier, object referenceObject) : base(referenceObject) => Multiplier = multiplier;
 	}
 }

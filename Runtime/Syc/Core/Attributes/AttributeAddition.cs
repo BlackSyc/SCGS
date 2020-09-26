@@ -1,4 +1,6 @@
-﻿namespace Syc.Core.Attributes
+﻿using UnityEngine;
+
+namespace Syc.Core.Attributes
 {
 	/// <summary>
 	/// An instance of this class represents an attribute modification by addition.
@@ -21,6 +23,7 @@
 		/// Creates a new instance of <see cref="AttributeAddition"/>.
 		/// </summary>
 		/// <param name="addition">The amount that will be added to the passed value in <see cref="Modify"/>.</param>
-		public AttributeAddition(float addition) => Addition = addition;
+		/// <param name="referenceObject"></param>
+		public AttributeAddition(float addition, object referenceObject) : base(referenceObject) => Addition = addition;
 	}
 }

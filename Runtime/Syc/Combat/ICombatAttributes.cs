@@ -3,7 +3,7 @@ using Syc.Core.Attributes;
 
 namespace Syc.Combat
 {
-	public interface ICombatAttributes
+	public interface ICombatAttributes : IAttributes
 	{
 		Attribute Stamina { get; }
 

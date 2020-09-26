@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Syc.Core.Attributes
@@ -15,7 +17,14 @@ namespace Syc.Core.Attributes
 		/// Current value of this attribute where the addition modifications are applied to the base value first,
 		/// followed by the multiplication modifications.
 		/// </summary>
-		public float CurrentValue => _multiplierChain.FeedThrough(_additionChain.FeedThrough(baseValue));
+		public float CurrentValue
+		{
+			get
+			{
+				var currentValue = baseValue + _additionChain.Sum(addition => addition.Addition);
+				return _multiplierChain.Aggregate(currentValue, (current, multiplier) => current * multiplier.Multiplier);
+			}
+		}
 
 		/// <summary>
 		/// Gets the base value of this attribute.
@@ -61,50 +70,52 @@ namespace Syc.Core.Attributes
 		/// The root element of the multiplication chain that is used to calculate the 
 		/// <see cref="CurrentValue"/> by feeding the <see cref="BaseValue"/> through the chain.
 		/// </summary>
-		private AttributeMultiplier _multiplierChain = new AttributeMultiplier(1);
+		private List<AttributeMultiplier> _multiplierChain = new List<AttributeMultiplier>();
 		
 		/// <summary>
 		/// The root element of the addition chain that is used to calculate the 
 		/// <see cref="CurrentValue"/> by feeding the <see cref="BaseValue"/> through the chain.
 		/// </summary>
-		private AttributeAddition _additionChain = new AttributeAddition(0);
+		private List<AttributeAddition> _additionChain = new List<AttributeAddition>();
 		
 		#endregion
 		
 		#region Public Methods
 
-		/// <summary>
-		/// Add a specified amount to this attributes <see cref="CurrentValue"/>.
-		/// Returns a handle to the created addition as an out parameter so that it can be removed by calling
-		/// <see cref="IModificationHandle.DestroyModification"/>.
-		/// </summary>
-		/// <param name="addition">The amount that will be added to the attributes <see cref="BaseValue"/>.
-		/// in the <see cref="CurrentValue"/> calculation.</param>
-		/// <param name="modificationHandle">A handle to the created addition so that it can be removed by calling
-		/// <see cref="IModificationHandle.DestroyModification"/>.</param>
-		/// <returns>A handle to the new addition.</returns>
-		public void Add(float addition, out IModificationHandle modificationHandle)
+		public void Add(float addition, object referenceObject)
 		{
-			var attributeAddition = new AttributeAddition(addition);
-			_additionChain.Put(attributeAddition);
-			modificationHandle = attributeAddition;
+			var activeAddition = _additionChain.FirstOrDefault(x => x.ReferenceObject == referenceObject);
+			if (activeAddition != null)
+			{
+				activeAddition.Addition += addition;
+				return;
+			}
+			
+			var attributeAddition = new AttributeAddition(addition, referenceObject);
+			_additionChain.Add(attributeAddition);
 		}
 
-		/// <summary>
-		/// Multiplies a specified amount with this attributes <see cref="BaseValue"/>.
-		/// Returns a handle to the created multiplier as an out parameter so that it can be removed by calling
-		/// <see cref="IModificationHandle.DestroyModification"/>.
-		/// </summary>
-		/// <param name="multiplier">The amount that will be multiplied with the attributes <see cref="BaseValue"/>.
-		/// in the <see cref="CurrentValue"/> calculation.</param>
-		/// <param name="modificationHandle">A handle to the created multiplier so that it can be removed by calling
-		/// <see cref="IModificationHandle.DestroyModification"/>.</param>
-		/// <returns>A handle to the new multiplier.</returns>
-		public void Multiply(float multiplier, out IModificationHandle modificationHandle)
+		public void RemoveAddition(object referenceObject)
 		{
-			var attributeMultiplier = new AttributeMultiplier(multiplier);
-			_multiplierChain.Put(attributeMultiplier);
-			modificationHandle = attributeMultiplier;
+			_additionChain.RemoveAll(x => x.ReferenceObject == referenceObject);
+		}
+
+		public void Multiply(float multiplier, object referenceObject)
+		{
+			var activeMultiplication = _multiplierChain.FirstOrDefault(x => x.ReferenceObject == referenceObject);
+			if (activeMultiplication != null)
+			{
+				activeMultiplication.Multiplier *= multiplier;
+				return;
+			}
+			
+			var attributeMultiplication = new AttributeMultiplier(multiplier, referenceObject);
+			_multiplierChain.Add(attributeMultiplication);
+		}
+
+		public void RemoveMultiplier(object referenceObject)
+		{
+			_multiplierChain.RemoveAll(x => x.ReferenceObject == referenceObject);
 		}
 
 		public float Remap() => (float) (remapMultiplier * Math.Pow(CurrentValue, remapExponent)) + remapAddition;

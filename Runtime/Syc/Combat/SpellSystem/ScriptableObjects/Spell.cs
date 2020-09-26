@@ -5,6 +5,7 @@ using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects;
 using Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects
 {
@@ -12,6 +13,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 	public class Spell : ScriptableObject
 	{
 		public string SpellName => spellName;
+
+		public Image Icon => icon;
 
 		public string SpellDescription => spellDescription;
 		
@@ -23,8 +26,9 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 		public IEnumerable<SpellEffect> SpellEffects => spellEffects;
 		
-		[SerializeField] 
-		protected string spellName;
+		[SerializeField] protected string spellName;
+
+		[SerializeField] protected Image icon;
 
 		[SerializeField]
 		[TextArea(5,10)]
@@ -89,9 +93,9 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 		public void ExecuteAll(SpellEffectType spellEffectType, ICaster source, Target target, SpellCast spellCast = default, SpellObject spellObject = default)
 		{
-			foreach (var behaviour in spellEffects.Where(x => x.Types.HasFlag(spellEffectType)))
+			foreach (var effect in spellEffects.Where(x => x.Types.HasFlag(spellEffectType)))
 			{
-				behaviour.Execute(source, target, this, spellCast, spellObject);
+				effect.Execute(source, target, this, spellCast, spellObject);
 			}
 		}
 
