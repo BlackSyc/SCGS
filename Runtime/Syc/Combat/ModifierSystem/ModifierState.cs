@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Syc.Combat.ModifierSystem.ScriptableObjects;
 using Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects;
 using Syc.Combat.SpellSystem;
@@ -17,7 +18,7 @@ namespace Syc.Combat.ModifierSystem
 		public int Stacks => _modifierStack.Count;
 
 		public object ReferenceObject => _referenceObject;
-		
+
 		// A list of the 'current time'(s) that a stack was added.
 		private readonly List<float> _modifierStack = new List<float>();
 
@@ -34,6 +35,8 @@ namespace Syc.Combat.ModifierSystem
 			_target = target;
 			ModifierType.ExecuteAll(ModifierEffectType.OnApply, _source, _target, _referenceObject, Time.time);
 		}
+
+		public float TimeRemaining => _modifierStack.Max();
 
 		public void AddStack()
 		{
