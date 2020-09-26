@@ -45,8 +45,11 @@ namespace Syc.Movement
                 return;
             
             var ownTransform = transform;
-            var localMovement = (ownTransform.right * _movementInput.x 
-                                 + ownTransform.forward * _movementInput.y) * MovementAttributes.MovementSpeed.Remap();
+
+            var localMovement = _movementInput != Vector2.zero
+                ? (ownTransform.right * _movementInput.x + ownTransform.forward * _movementInput.y) *
+                  MovementAttributes.MovementSpeed.Remap()
+                : Vector3.zero;
 
             localMovement.y = _upwardsMovement;
 
