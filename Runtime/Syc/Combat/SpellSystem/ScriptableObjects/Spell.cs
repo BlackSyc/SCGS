@@ -18,6 +18,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		public float CastTime => castTime;
 
 		public float CoolDown => coolDown;
+
+		public IEnumerable<SpellEffect> SpellEffects => spellEffects;
 		
 		[SerializeField] 
 		protected string spellName;
