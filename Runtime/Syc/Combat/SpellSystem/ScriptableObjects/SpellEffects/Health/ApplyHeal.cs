@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 {
-	[CreateAssetMenu(menuName = "Spell System/Effects/Health/Apply Heal")]
+	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Apply Heal")]
 	public class ApplyHeal : SpellEffect
 	{
 		[SerializeField] 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 {
-	[CreateAssetMenu(menuName = "Spell System/Effects/Health/Deal Damage From Range")]
+	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Deal Damage From Range")]
 	public class DealDamageFromRange : DealDamage
 	{
 		[SerializeField] protected float damageCeiling;

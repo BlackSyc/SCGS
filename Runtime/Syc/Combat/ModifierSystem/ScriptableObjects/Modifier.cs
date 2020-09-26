@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
+	[CreateAssetMenu(menuName = "Spell System/Modifiers/Empty Modifier")]
 	public class Modifier : ScriptableObject
 	{
 		public string ModifierName => modifierName;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 {
-	[CreateAssetMenu(menuName = "Spell System/Effects/Spawn Object")]
+	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Spawn Object")]
 	public class SpawnObject : SpellEffect
 	{
 		
