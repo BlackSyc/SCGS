@@ -63,7 +63,7 @@ namespace Syc.Combat.SpellSystem
 			if (CurrentSpellCast?.Spell == null)
 				return;
 
-			if (CurrentSpellCast.Spell.CastWhileMoving)
+			if (CurrentSpellCast.Spell.CastWhileMoving || CurrentSpellCast.Spell.CastTime == 0)
 				return;
 			
 			CurrentSpellCast?.Cancel(CancelCastReason.Movement);
