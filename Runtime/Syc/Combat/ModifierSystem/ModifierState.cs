@@ -55,7 +55,15 @@ namespace Syc.Combat.ModifierSystem
 
 		public void Update(float _)
 		{
-			_modifierStack.RemoveAll(x => (Time.time - x) > ModifierType.Duration);
+			_modifierStack.RemoveAll(x =>
+			{
+				if (Time.time - x < ModifierType.Duration)
+					return false;
+				
+				ModifierType.ExecuteAll(ModifierEffectType.OnRemove, _source, _target, _referenceObject, x);
+				return true;
+
+			});
 			foreach (var modifier in _modifierStack)
 			{
 				ModifierType.ExecuteAll(ModifierEffectType.OnUpdate, _source, _target, _referenceObject, modifier);
