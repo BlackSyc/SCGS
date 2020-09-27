@@ -34,6 +34,7 @@ namespace Syc.Combat.ModifierSystem
 			var newModifier = new ModifierState(source, System, modifier, referenceObject);
 			_activeModifiers.Add(newModifier);
 			OnModifierAdded?.Invoke(newModifier);
+			newModifier.InvokeOnApply();
 			return newModifier;
 		}
 

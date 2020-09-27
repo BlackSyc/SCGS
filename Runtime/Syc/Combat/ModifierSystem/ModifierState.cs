@@ -33,7 +33,6 @@ namespace Syc.Combat.ModifierSystem
 			_source = source;
 			_referenceObject = referenceObject;
 			_target = target;
-			ModifierType.ExecuteAll(ModifierEffectType.OnApply, _source, _target, _referenceObject, Time.time);
 		}
 
 		public float TimeRemaining => _modifierStack.Max();
@@ -68,6 +67,11 @@ namespace Syc.Combat.ModifierSystem
 			{
 				ModifierType.ExecuteAll(ModifierEffectType.OnUpdate, _source, _target, _referenceObject, modifier);
 			}
+		}
+
+		public void InvokeOnApply()
+		{
+			ModifierType.ExecuteAll(ModifierEffectType.OnApply, _source, _target, _referenceObject, Time.time);
 		}
 	}
 }
