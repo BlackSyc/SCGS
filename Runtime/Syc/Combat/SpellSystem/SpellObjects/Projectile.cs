@@ -73,6 +73,8 @@ namespace Syc.Combat.SpellSystem.SpellObjects
                 ownTransform.position = position;
                 yield return null;
             }
+            
+            DestroyGameObject(null);
         }
 
     }
