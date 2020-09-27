@@ -5,7 +5,6 @@ using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects;
 using Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects
 {
@@ -14,7 +13,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 	{
 		public string SpellName => spellName;
 
-		public Image Icon => icon;
+		public Sprite Icon => icon;
 
 		public string SpellDescription => spellDescription;
 		
@@ -28,7 +27,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		
 		[SerializeField] protected string spellName;
 
-		[SerializeField] protected Image icon;
+		[SerializeField] protected Sprite icon;
 
 		[SerializeField]
 		[TextArea(5,10)]

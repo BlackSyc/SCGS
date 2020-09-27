@@ -3,7 +3,6 @@ using System.Linq;
 using Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects;
 using Syc.Combat.SpellSystem;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
@@ -12,12 +11,12 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 	{
 		public string ModifierName => modifierName;
 		public string ModifierDescription => modifierDescription;
-		public Image Icon => icon;
+		public Sprite Icon => icon;
 		public float Duration => duration;
 
 		[SerializeField] protected string modifierName;
 		[SerializeField] protected string modifierDescription;
-		[SerializeField] protected Image icon;
+		[SerializeField] protected Sprite icon;
 		[SerializeField] protected float duration;
 		[SerializeField] protected List<ModifierEffect> modifierEffects;
 		
