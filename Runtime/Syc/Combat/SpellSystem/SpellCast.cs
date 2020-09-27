@@ -32,17 +32,33 @@ namespace Syc.Combat.SpellSystem
 			Target = target;
 		}
 
+		public void Start()
+		{
+			if (SpellCastStarted)
+				return;
+
+			Spell.StartCast(this);
+			SpellCastStarted = true;
+			OnSpellCastStarted?.Invoke(this);
+
+			if (Spell.CastTime > 0)
+				return;
+
+			Spell.CompleteCast(this);
+			SpellCastCompleted = true;
+			OnSpellCompleted?.Invoke(this);
+		}
+ 
 		public void Update(float deltaTime)
 		{
-			if (SpellCastCancelled)
+			if (!SpellCastStarted)
+				return;
+
+			if (SpellCastCompleted)
 				return;
 			
-			if (!SpellCastStarted)
-			{
-				Spell.StartCast(this);
-				SpellCastStarted = true;
-				OnSpellCastStarted?.Invoke(this);
-			}
+			if (SpellCastCancelled)
+				return;
 
 			CurrentCastTime += deltaTime * Caster.System.AttributeSystem.Haste.Remap();
 			Spell.UpdateCast(this);

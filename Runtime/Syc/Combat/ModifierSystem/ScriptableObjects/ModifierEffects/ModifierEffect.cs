@@ -10,6 +10,6 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects
 		[SerializeField]
 		protected ModifierEffectType types;
 
-		public abstract void Execute(ICaster source, ICombatSystem target, Modifier modifier, object referenceObject, float elapsedTime);
+		public abstract void Execute(ICaster caster, ICombatSystem target, Modifier modifier, object referenceObject, float elapsedTime);
 	}
 }

@@ -16,10 +16,15 @@ namespace Syc.Combat.ModifierSystem
 
 		private List<ModifierState> _activeModifiers = new List<ModifierState>();
 
+		public ModifierState GetModifier(Modifier modifier, object referenceObject)
+		{
+			return _activeModifiers
+				.FirstOrDefault(x => x.ModifierType == modifier && x.ReferenceObject == referenceObject);
+		}
+
 		public ModifierState AddModifier(Modifier modifier, ICaster source, object referenceObject)
 		{
-			var activeModifier = _activeModifiers
-				.FirstOrDefault(x => x.ModifierType == modifier && x.ReferenceObject == referenceObject);
+			var activeModifier = GetModifier(modifier, referenceObject);
 			
 			if (activeModifier != null)
 			{

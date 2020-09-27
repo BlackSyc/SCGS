@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Syc.Combat
 {
@@ -17,5 +18,7 @@ namespace Syc.Combat
 		bool Has<T>(out T t);
 
 		bool Has<T>();
+
+		Coroutine ExecuteCoroutine(IEnumerator coroutine);
 	}
 }

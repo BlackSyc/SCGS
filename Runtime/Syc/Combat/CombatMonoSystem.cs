@@ -1,4 +1,5 @@
-﻿using Syc.Core.System;
+﻿using System.Collections;
+using Syc.Core.System;
 using UnityEngine;
 
 namespace Syc.Combat
@@ -9,6 +10,10 @@ namespace Syc.Combat
 		public abstract ICombatAttributes AttributeSystem { get; }
 		public abstract Transform Origin { get; }
 		public abstract bool CanBeTargeted { get; set; }
+		public Coroutine ExecuteCoroutine(IEnumerator coroutine)
+		{
+			return StartCoroutine(coroutine);
+		}
 
 		protected void AddSubsystem(ISubSystem<ICombatSystem> subSystem)
 		{
