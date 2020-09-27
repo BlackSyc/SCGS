@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using Syc.Core;
+using UnityEngine;
 
 namespace Syc.Combat.TargetSystem
 {
 	public class Target
 	{
-		public bool IsCombatTarget => TargetObject != null 
-		                              && TargetObject.GetComponent<ICombatSystem>() != null 
-		                              && TargetObject.GetComponent<ICombatSystem>().CanBeTargeted;
+		public bool IsCombatTarget => CombatSystem != null;
 		
 		public GameObject TargetObject { get; }
 
-		public ICombatSystem CombatSystem => TargetObject.GetComponent<ICombatSystem>() != null && TargetObject.GetComponent<ICombatSystem>().CanBeTargeted 
-			? TargetObject.GetComponent<ICombatSystem>()
+		public ICombatSystem CombatSystem => TargetObject != null 
+		                                     && TargetObject.HasComponent(out ICombatSystem combatSystem)
+		                                     && combatSystem.CanBeTargeted 
+			? combatSystem
 			: default;
 
 		public Vector3 Position => TargetObject == default
@@ -35,9 +36,15 @@ namespace Syc.Combat.TargetSystem
 			if (!IsCombatTarget)
 				return false;
 			
-			return combatSystem.Allegiance == TargetObject.GetComponent<ICombatSystem>().Allegiance;
+			return combatSystem.Allegiance == CombatSystem.Allegiance;
 		}
 		
-		public bool IsEnemyTo(ICombatSystem combatSystem) => !IsFriendlyTo(combatSystem);
+		public bool IsEnemyTo(ICombatSystem combatSystem)
+		{ 
+			if (!IsCombatTarget)
+				return false;
+			
+			return combatSystem.Allegiance != CombatSystem.Allegiance;
+		} 
 	}
 }
