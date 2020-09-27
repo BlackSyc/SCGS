@@ -28,6 +28,9 @@ namespace Syc.Combat.ModifierSystem
 			
 			if (activeModifier != null)
 			{
+				if (!modifier.CanStack)
+					return activeModifier;
+				
 				activeModifier.AddStack();
 				return activeModifier;
 			}

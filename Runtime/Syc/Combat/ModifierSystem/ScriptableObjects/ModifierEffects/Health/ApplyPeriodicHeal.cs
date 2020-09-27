@@ -43,7 +43,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 
 			while (modifierState.Stacks > 0)
 			{
-				healthSystem.Heal(CreateHealRequest(caster, target, modifier, referenceObject, elapsedTime));
+				healthSystem.Heal(CreateHealRequest(caster, target, modifier, referenceObject, elapsedTime, modifierState.Stacks));
 				yield return new WaitForSeconds(timePeriod);
 			}
 		}
@@ -53,7 +53,8 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 			ICombatSystem target, 
 			Modifier modifier, 
 			object referenceObject, 
-			float elapsedTime)
+			float elapsedTime,
+			int currentModifierStacks)
 		{
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
@@ -72,7 +73,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 
 			var healingSource = caster.System.Origin.gameObject;
 
-			return new HealRequest(healAmount * attributeMultiplier,
+			return new HealRequest(healAmount * currentModifierStacks * attributeMultiplier,
 				isCriticalStrike,
 				healingSource,
 				HealRequest.DefaultHealCalculator);

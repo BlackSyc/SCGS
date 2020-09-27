@@ -45,7 +45,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 
 			while (modifierState.Stacks > 0)
 			{
-				healthSystem.Damage(CreateDamageRequest(caster, target, modifier, referenceObject, elapsedTime));
+				healthSystem.Damage(CreateDamageRequest(caster, target, modifier, referenceObject, elapsedTime, modifierState.Stacks));
 				yield return new WaitForSeconds(timePeriod);
 			}
 		}
@@ -55,7 +55,8 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 			ICombatSystem target, 
 			Modifier modifier, 
 			object referenceObject, 
-			float elapsedTime)
+			float elapsedTime,
+			int currentModifierStacks)
 		{
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
@@ -73,7 +74,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Health
 
 			var damageSource = caster.System.Origin.gameObject;
 
-			return new DamageRequest(damageAmount * attributeMultiplier,
+			return new DamageRequest(damageAmount * currentModifierStacks * attributeMultiplier,
 				isCriticalStrike,
 				damageSource,
 				allowDamageMitigation

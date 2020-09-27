@@ -13,11 +13,13 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		public string ModifierDescription => modifierDescription;
 		public Sprite Icon => icon;
 		public float Duration => duration;
+		public bool CanStack => canStack;
 
 		[SerializeField] protected string modifierName;
 		[SerializeField] protected string modifierDescription;
 		[SerializeField] protected Sprite icon;
 		[SerializeField] protected float duration;
+		[SerializeField] protected bool canStack;
 		[SerializeField] protected List<ModifierEffect> modifierEffects;
 		
 		public void ExecuteAll(ModifierEffectType modifierEffectType, ICaster source, ICombatSystem target, object referenceObject, float elapsedTime)
