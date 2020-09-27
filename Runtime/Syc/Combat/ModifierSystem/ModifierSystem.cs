@@ -29,7 +29,10 @@ namespace Syc.Combat.ModifierSystem
 			if (activeModifier != null)
 			{
 				if (!modifier.CanStack)
+				{
+					activeModifier.ResetDurationFirst();
 					return activeModifier;
+				}
 				
 				activeModifier.AddStack();
 				return activeModifier;
@@ -54,6 +57,7 @@ namespace Syc.Combat.ModifierSystem
 			if (activeModifier.Stacks >= 1)
 				return;
 
+			activeModifier.InvokeOnRemove();
 			_activeModifiers.Remove(activeModifier);
 			OnModifierRemoved?.Invoke(activeModifier);
 		}

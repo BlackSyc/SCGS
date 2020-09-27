@@ -42,13 +42,13 @@ namespace Syc.Combat.ModifierSystem
 		{
 			var currentTime = Time.time;
 			_modifierStack.Add(currentTime);
-			ModifierType.ExecuteAll(ModifierEffectType.OnApply, _source, _target, _referenceObject, currentTime);
+			ModifierType.ExecuteAll(ModifierEffectType.OnApplyStack, _source, _target, _referenceObject, currentTime);
 			OnStackAdded?.Invoke(_modifierStack.Count);
 		}
 
 		public void RemoveStack()
 		{
-			ModifierType.ExecuteAll(ModifierEffectType.OnRemove, _source, _target, _referenceObject, _modifierStack[0]);
+			ModifierType.ExecuteAll(ModifierEffectType.OnRemoveStack, _source, _target, _referenceObject, _modifierStack[0]);
 			_modifierStack.RemoveAt(0);
 			OnStackRemoved?.Invoke(_modifierStack.Count);
 		}
@@ -60,7 +60,7 @@ namespace Syc.Combat.ModifierSystem
 				if (Time.time - x < ModifierType.Duration)
 					return false;
 				
-				ModifierType.ExecuteAll(ModifierEffectType.OnRemove, _source, _target, _referenceObject, x);
+				ModifierType.ExecuteAll(ModifierEffectType.OnRemoveStack, _source, _target, _referenceObject, x);
 				return true;
 
 			});
@@ -73,6 +73,34 @@ namespace Syc.Combat.ModifierSystem
 		public void InvokeOnApply()
 		{
 			ModifierType.ExecuteAll(ModifierEffectType.OnApply, _source, _target, _referenceObject, Time.time);
+		}
+
+		public void InvokeOnRemove()
+		{
+			ModifierType.ExecuteAll(ModifierEffectType.OnRemove, _source, _target, _referenceObject, Time.time);
+		}
+
+		public void ResetDurationFirst()
+		{
+			if (!_modifierStack.Any())
+			{
+				_modifierStack.Add(Time.time);
+			}
+			else
+			{
+				_modifierStack[0] = Time.time;
+			}
+		}
+
+		public void ResetDurationAll()
+		{
+			if (!_modifierStack.Any())
+				return;
+
+			for (var i = 0; i < _modifierStack.Count; i++)
+			{
+				_modifierStack[i] = Time.time;
+			}
 		}
 	}
 }
