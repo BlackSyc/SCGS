@@ -17,7 +17,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects.Attributes
 				? modifier 
 				: referenceObject;
 			
-			target.AttributeSystem.Get(attributeName)?.Add(value, referenceObject);
+			target.AttributeSystem.Get(attributeName)?.Multiply(value, referenceObject);
 		}
 	}
 }
