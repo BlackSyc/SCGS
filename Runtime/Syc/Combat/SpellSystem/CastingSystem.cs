@@ -51,6 +51,7 @@ namespace Syc.Combat.SpellSystem
 			{
 				SetCurrentSpellCast(newSpellCast);
 				OnNewSpellCast?.Invoke(CurrentSpellCast);
+				CurrentSpellCast.Start();
 			}
 			else
 			{
