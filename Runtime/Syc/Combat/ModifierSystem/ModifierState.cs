@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem
 {
+	[Serializable]
 	public class ModifierState
 	{
 		public event Action<int> OnStackAdded;
