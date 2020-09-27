@@ -36,7 +36,7 @@ namespace Syc.Combat.ModifierSystem
 			_target = target;
 		}
 
-		public float TimeRemaining => _modifierStack.Max();
+		public float TimeRemaining => ModifierType.Duration - (Time.time - _modifierStack.Max());
 
 		public void AddStack()
 		{
