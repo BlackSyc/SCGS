@@ -68,8 +68,9 @@ namespace Syc.Core.Attributes
 		/// The addition used to calculate the attributes <see cref="Remap()"/>
 		/// Default value is 0.
 		/// </summary>
-		[SerializeField] 
-		private float remapAddition;
+		[SerializeField] private float horizontalOffset;
+
+		[SerializeField] private float verticalOffset;
 		
 		#endregion
 		
@@ -127,7 +128,7 @@ namespace Syc.Core.Attributes
 			_multiplierChain.RemoveAll(x => x.ReferenceObject == referenceObject);
 		}
 
-		public float Remap() => (float) (remapMultiplier * Math.Pow(CurrentValue, remapExponent)) + remapAddition;
+		public float Remap() => (float) (remapMultiplier * Math.Pow(CurrentValue + horizontalOffset, remapExponent)) + verticalOffset;
 
 		public float Remap(Func<float, float> remappingFunction) => remappingFunction.Invoke(CurrentValue);
 		
@@ -141,13 +142,15 @@ namespace Syc.Core.Attributes
 		/// <param name="baseValue">The base value of the newly created attribute.</param>
 		/// <param name="remapMultiplier">The multiplication used to calculate the attributes <see cref="Remap()"/>.</param>
 		/// <param name="remapExponent">The exponent used to calculate the attributes <see cref="Remap()"/>.</param>
-		/// <param name="remapAddition">The addition u sed to calculate the attributes <see cref="Remap()"/>.</param>
-		public Attribute(float baseValue = 10f, float remapMultiplier = 1f, float remapExponent = 1f, float remapAddition = 0f)
+		/// <param name="horizontalOffset">The addition u sed to calculate the attributes <see cref="Remap()"/>.</param>
+		/// <param name="verticalOffset"></param>
+		public Attribute(float baseValue = 10f, float remapMultiplier = 1f, float remapExponent = 1f, float horizontalOffset = 0f, float verticalOffset = 0f)
 		{
 			this.baseValue = baseValue;
 			this.remapMultiplier = remapMultiplier;
 			this.remapExponent = remapExponent;
-			this.remapAddition = remapAddition;
+			this.horizontalOffset = horizontalOffset;
+			this.verticalOffset = verticalOffset;
 		}
 
 		private Attribute() { }

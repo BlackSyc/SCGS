@@ -33,7 +33,7 @@ namespace Syc.Combat.HealthSystem
 
 		public static Func<ICombatAttributes, float, float> WithMitigation =>
 			(attributes, baseAmount) => 
-				attributes?.Armor != null ? attributes.Armor.Remap() * baseAmount : baseAmount; 
+				attributes?.Armor?.Remap() * baseAmount ?? baseAmount; 
 
 		public static Func<ICombatAttributes, float, float> NoMitigation =>
 			(attributes, baseAmount) => baseAmount;
