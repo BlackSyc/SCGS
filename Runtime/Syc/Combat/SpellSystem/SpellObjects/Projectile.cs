@@ -64,7 +64,7 @@ namespace Syc.Combat.SpellSystem.SpellObjects
                 var ownTransform = transform;
                 var position = ownTransform.position;
                 var positionDelta = Target.TargetObject != null 
-                    ? Target.TargetObject.transform.position - position
+                    ? Target.TargetObject.GetComponent<Collider>().bounds.center - position
                     : Target.Position - position;
                 
                 var desiredLookRotation =  Quaternion.LookRotation(positionDelta);
