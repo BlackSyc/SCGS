@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 {
-	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Apply Heal")]
+	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/AddStack Heal")]
 	public class ApplyHeal : SpellEffect
 	{
 		public float HealAmount => healAmount;

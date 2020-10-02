@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 {
-	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/Apply Heal From Range")]
+	[CreateAssetMenu(menuName = "Spell System/Spells/Effects/Health/AddStack Heal From Range")]
 	public class ApplyHealFromRange : ApplyHeal
 	{
 		public float HealCeiling => healCeiling;

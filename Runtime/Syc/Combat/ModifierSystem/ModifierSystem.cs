@@ -33,7 +33,7 @@ namespace Syc.Combat.ModifierSystem
 					return activeModifier;
 				}
 				
-				activeModifier.Apply();
+				activeModifier.AddStack();
 				return activeModifier;
 			}
 			var newModifier = modifier.CreateState(source, System, referenceObject);
