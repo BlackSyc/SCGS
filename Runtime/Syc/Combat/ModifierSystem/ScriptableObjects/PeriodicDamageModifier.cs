@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Syc.Combat.HealthSystem;
 using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
@@ -24,19 +25,40 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 
 		private IEnumerator DamageCoroutine(ModifierState state)
 		{
-			float lastBlow = 0f;
+			if (!state.Target.Has(out HealthSystem.HealthSystem healthSystem))
+				yield break;
 			
-			while (!state.CoroutineShouldStop)
+			while (state.Stacks > 0)
 			{
-				if (lastBlow < Time.time - period)
-				{
-					yield return null;
-				}
-				
-				
-				
-				
+				healthSystem.Damage(CreateDamageRequest(state));
+				yield return new WaitForSeconds(period);
 			}
+		}
+
+		protected virtual DamageRequest CreateDamageRequest(ModifierState state)
+		{
+			var attributeMultiplier = 1f;
+			var isCriticalStrike = false;
+
+			if (affectedBySpellPower)
+				attributeMultiplier *= state.Source.System.AttributeSystem.SpellPower.Remap();
+			
+			if(canCrit){
+				if (Random.Range(0f, 1f) < state.Source.System.AttributeSystem.CriticalStrikeRating.Remap())
+				{
+					isCriticalStrike = true;
+					attributeMultiplier *= critMultiplier;
+				}
+			}
+
+			var damageSource = state.Source.System.Origin.gameObject;
+
+			return new DamageRequest(baseDamage * attributeMultiplier * state.Stacks,
+				isCriticalStrike,
+				damageSource,
+				allowMitigation
+					? DamageRequest.WithMitigation
+					: DamageRequest.NoMitigation);
 		}
 	}
 }
