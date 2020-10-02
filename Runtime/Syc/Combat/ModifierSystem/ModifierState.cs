@@ -10,6 +10,9 @@ namespace Syc.Combat.ModifierSystem
 	public class ModifierState
 	{
 		public event Action<int> OnStackAdded;
+
+		public event Action<int> OnStackRemoved;
+		
 		public bool HasExpired => ElapsedTime > ModifierType.Duration;
 		public Modifier ModifierType { get; }
 		public int Stacks { get; set; }
@@ -39,6 +42,20 @@ namespace Syc.Combat.ModifierSystem
 			ElapsedTime = 0;
 			ModifierType.AppliedStack(this);
 			OnStackAdded?.Invoke(Stacks);
+		}
+
+		public void RemoveStack()
+		{
+			Stacks -= 1;
+			ModifierType.RemovedStack(this);
+			OnStackRemoved?.Invoke(Stacks);
+		}
+
+		public void RemoveAllStacks()
+		{
+			Stacks = 0;
+			ModifierType.RemovedStack(this);
+			OnStackRemoved?.Invoke(Stacks);
 		}
 
 		public void ResetDuration()
