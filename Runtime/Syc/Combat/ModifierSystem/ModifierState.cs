@@ -38,34 +38,38 @@ namespace Syc.Combat.ModifierSystem
 		
 		public void AddStack()
 		{
-			Stacks += 1;
 			ElapsedTime = 0;
+			
+			if (Stacks >= ModifierType.StackLimit)
+				return;
+			
+			Stacks += 1;
+			ModifierType.AppliedStack(this);
 			OnStackAdded?.Invoke(Stacks);
 		}
 
 		public void RemoveStack()
 		{
 			Stacks -= 1;
+			ModifierType.RemovedStack(this);
 			OnStackRemoved?.Invoke(Stacks);
 		}
 
 		public void Apply()
 		{
-			Stacks = 1;
-			ElapsedTime = 0;
 			ModifierType.Applied(this);
+			AddStack();
 		}
 
 		public void Remove()
 		{
-			Stacks = 0;
+			var stacks = Stacks;
+			for (var i = 0; i < stacks; i++)
+			{
+				RemoveStack();
+			}
+			
 			ModifierType.Removed(this);
-			OnStackRemoved?.Invoke(Stacks);
-		}
-
-		public void ResetDuration()
-		{
-			ElapsedTime = 0;
 		}
 
 		public void Tick(float deltaTime)

@@ -27,15 +27,10 @@ namespace Syc.Combat.ModifierSystem
 			
 			if (activeModifier != null)
 			{
-				if (!modifier.CanStack)
-				{
-					activeModifier.ResetDuration();
-					return activeModifier;
-				}
-				
 				activeModifier.AddStack();
 				return activeModifier;
 			}
+			
 			var newModifier = modifier.CreateState(source, System, referenceObject);
 			_activeModifiers.Add(newModifier);
 			newModifier.Apply();
