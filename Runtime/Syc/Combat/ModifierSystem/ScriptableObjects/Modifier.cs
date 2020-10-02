@@ -23,8 +23,8 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 			return new ModifierState(source, target, this, referenceObject);
 		}
 
-		public abstract void AppliedStack(ModifierState state);
+		public abstract void Applied(ModifierState state);
 
-		public abstract void RemovedStack(ModifierState state);
+		public abstract void Removed(ModifierState state);
 	}
 }

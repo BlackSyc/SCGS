@@ -13,7 +13,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		[SerializeField] protected AttributeModifierType type;
 		[SerializeField] protected bool useModifierAsReference;
 
-		public override void AppliedStack(ModifierState state)
+		public override void Applied(ModifierState state)
 		{
 			if (state.Stacks > 1 && !CanStack)
 				return;
@@ -33,7 +33,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 			}
 		}
 
-		public override void RemovedStack(ModifierState state)
+		public override void Removed(ModifierState state)
 		{
 			if (state.Stacks > 0 && !CanStack)
 				return;

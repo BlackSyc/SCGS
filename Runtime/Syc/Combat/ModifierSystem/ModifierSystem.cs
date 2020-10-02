@@ -33,12 +33,12 @@ namespace Syc.Combat.ModifierSystem
 					return activeModifier;
 				}
 				
-				activeModifier.AddStack();
+				activeModifier.Apply();
 				return activeModifier;
 			}
 			var newModifier = modifier.CreateState(source, System, referenceObject);
 			_activeModifiers.Add(newModifier);
-			newModifier.AddStack();
+			newModifier.Apply();
 			OnModifierAdded?.Invoke(newModifier);
 			return newModifier;
 		}
@@ -51,7 +51,7 @@ namespace Syc.Combat.ModifierSystem
 			if (activeModifier == null)
 				return;
 			
-			activeModifier.RemoveAllStacks();
+			activeModifier.Remove();
 			_activeModifiers.Remove(activeModifier);
 			OnModifierRemoved?.Invoke(activeModifier);
 		}
@@ -70,6 +70,7 @@ namespace Syc.Combat.ModifierSystem
 
 			foreach (var completeModifier in completeModifiers)
 			{
+				completeModifier.Remove();
 				_activeModifiers.Remove(completeModifier);
 				OnModifierRemoved?.Invoke(completeModifier);
 			}

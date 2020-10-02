@@ -36,25 +36,24 @@ namespace Syc.Combat.ModifierSystem
 			Target.ExecuteCoroutine(coroutine);
 		}
 		
-		public void AddStack()
+		public void Apply()
 		{
 			Stacks += 1;
 			ElapsedTime = 0;
-			ModifierType.AppliedStack(this);
+			ModifierType.Applied(this);
 			OnStackAdded?.Invoke(Stacks);
 		}
 
 		public void RemoveStack()
 		{
 			Stacks -= 1;
-			ModifierType.RemovedStack(this);
 			OnStackRemoved?.Invoke(Stacks);
 		}
 
-		public void RemoveAllStacks()
+		public void Remove()
 		{
 			Stacks = 0;
-			ModifierType.RemovedStack(this);
+			ModifierType.Removed(this);
 			OnStackRemoved?.Invoke(Stacks);
 		}
 

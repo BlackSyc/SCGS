@@ -14,12 +14,12 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		[SerializeField] protected float critMultiplier;
 		[SerializeField] protected float period;
 		
-		public override void AppliedStack(ModifierState state)
+		public override void Applied(ModifierState state)
 		{
 			state.StartCoroutine(DamageCoroutine(state));
 		}
 
-		public override void RemovedStack(ModifierState state)
+		public override void Removed(ModifierState state)
 		{
 			state.CoroutineShouldStop = true;
 		}
