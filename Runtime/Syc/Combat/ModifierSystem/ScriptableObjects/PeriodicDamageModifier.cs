@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
+	[CreateAssetMenu(menuName = "Spell System/Modifiers/Periodic Damage Modifier")]
 	public class PeriodicDamageModifier : Modifier
 	{
 		[SerializeField] protected float baseDamage;
