@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Syc.Combat.HealthSystem;
 using UnityEngine;
-using UnityEngine.Experimental.Networking.PlayerConnection;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
@@ -29,12 +28,12 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		{
 			if (!state.Target.Has(out HealthSystem.HealthSystem healthSystem))
 				yield break;
-
-			do
+			
+			while (state.Stacks > 0)
 			{
 				healthSystem.Damage(CreateDamageRequest(state));
 				yield return new WaitForSeconds(period);
-			} while (state.Stacks > 0);
+			}
 		}
 
 		protected virtual DamageRequest CreateDamageRequest(ModifierState state)

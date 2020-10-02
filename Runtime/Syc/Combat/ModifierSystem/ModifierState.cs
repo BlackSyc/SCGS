@@ -57,8 +57,8 @@ namespace Syc.Combat.ModifierSystem
 
 		public void Apply()
 		{
-			ModifierType.Applied(this);
 			AddStack();
+			ModifierType.Applied(this);
 		}
 
 		public void Remove()
