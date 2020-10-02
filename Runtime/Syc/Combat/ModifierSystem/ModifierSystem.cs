@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Syc.Combat.ModifierSystem.ScriptableObjects;
 using Syc.Combat.SpellSystem;
-using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem
 {
@@ -30,17 +29,16 @@ namespace Syc.Combat.ModifierSystem
 			{
 				if (!modifier.CanStack)
 				{
-					activeModifier.ResetDurationFirst();
+					activeModifier.ResetDuration();
 					return activeModifier;
 				}
 				
 				activeModifier.AddStack();
 				return activeModifier;
 			}
-			var newModifier = new ModifierState(source, System, modifier, referenceObject);
+			var newModifier = modifier.CreateState(source, System, referenceObject);
 			_activeModifiers.Add(newModifier);
 			OnModifierAdded?.Invoke(newModifier);
-			newModifier.InvokeOnApply();
 			return newModifier;
 		}
 
@@ -52,12 +50,6 @@ namespace Syc.Combat.ModifierSystem
 			if (activeModifier == null)
 				return;
 			
-			activeModifier.RemoveStack();
-			
-			if (activeModifier.Stacks >= 1)
-				return;
-
-			activeModifier.InvokeOnRemove();
 			_activeModifiers.Remove(activeModifier);
 			OnModifierRemoved?.Invoke(activeModifier);
 		}
@@ -67,11 +59,11 @@ namespace Syc.Combat.ModifierSystem
 		{
 			foreach (var activeModifier in _activeModifiers)
 			{
-				activeModifier.Update(deltaTime);
+				activeModifier.Tick(deltaTime);
 			}
 
 			var completeModifiers =  _activeModifiers
-				.Where(x => x.Stacks < 1)
+				.Where(x => x.HasExpired)
 				.ToList();
 
 			foreach (var completeModifier in completeModifiers)

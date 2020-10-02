@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects;
-using Syc.Combat.SpellSystem;
+﻿using Syc.Combat.SpellSystem;
 using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects
 {
-	[CreateAssetMenu(menuName = "Spell System/Modifiers/Modifier")]
-	public class Modifier : ScriptableObject
+	public abstract class Modifier : ScriptableObject
 	{
 		public string ModifierName => modifierName;
 		public string ModifierDescription => modifierDescription;
@@ -16,18 +12,19 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		public bool CanStack => canStack;
 
 		[SerializeField] protected string modifierName;
+		[TextArea(3,10)]
 		[SerializeField] protected string modifierDescription;
 		[SerializeField] protected Sprite icon;
 		[SerializeField] protected float duration;
 		[SerializeField] protected bool canStack;
-		[SerializeField] protected List<ModifierEffect> modifierEffects;
-		
-		public void ExecuteAll(ModifierEffectType modifierEffectType, ICaster source, ICombatSystem target, object referenceObject, float elapsedTime)
+
+		public virtual ModifierState CreateState(ICaster source, ICombatSystem target,  object referenceObject)
 		{
-			foreach (var effect in modifierEffects.Where(x => x.Types.HasFlag(modifierEffectType)))
-			{
-				effect.Execute(source, target, this, referenceObject, elapsedTime);
-			}
+			return new ModifierState(source, target, this, referenceObject);
 		}
+
+		public abstract void AppliedStack(ModifierState state);
+
+		public abstract void RemovedStack(ModifierState state);
 	}
 }

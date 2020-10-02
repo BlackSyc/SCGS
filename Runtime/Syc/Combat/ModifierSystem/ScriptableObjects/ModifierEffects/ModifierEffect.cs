@@ -1,4 +1,4 @@
-﻿using Syc.Combat.SpellSystem;
+﻿﻿using Syc.Combat.SpellSystem;
 using UnityEngine;
 
 namespace Syc.Combat.ModifierSystem.ScriptableObjects.ModifierEffects

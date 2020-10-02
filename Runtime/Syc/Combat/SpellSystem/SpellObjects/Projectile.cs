@@ -16,13 +16,13 @@ namespace Syc.Combat.SpellSystem.SpellObjects
         [SerializeField] private float maxLifeTime = 10.0f;
 
         #region MonoBehaviour
-        private void Start()
+        protected virtual void Start()
         {
             SpellCast.OnSpellCompleted += FlyToTarget;
             SpellCast.OnSpellCancelled += DestroyGameObject;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject != Target.TargetObject)
                 return;
@@ -31,7 +31,7 @@ namespace Syc.Combat.SpellSystem.SpellObjects
             DestroyGameObject(null);
         }
         
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             SpellCast.OnSpellCompleted -= FlyToTarget;
             SpellCast.OnSpellCancelled -= DestroyGameObject;
@@ -39,19 +39,19 @@ namespace Syc.Combat.SpellSystem.SpellObjects
         
         #endregion
 
-        private void DestroyGameObject(SpellCast _)
+        protected virtual void DestroyGameObject(SpellCast _)
         {
             StopAllCoroutines();
             Destroy(gameObject);
         }
 
-        private void FlyToTarget(SpellCast _)
+        protected virtual void FlyToTarget(SpellCast _)
         {
             transform.SetParent(null, true);
             StartCoroutine(FlyToTargetCoroutine());
         }
 
-        private IEnumerator FlyToTargetCoroutine()
+        protected virtual IEnumerator FlyToTargetCoroutine()
         {
             var currentLifeTime = 0f;
             
