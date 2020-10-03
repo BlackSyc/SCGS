@@ -5,13 +5,13 @@ namespace Syc.Combat.Auras.ScriptableObjects
 {
 	public abstract class Aura : ScriptableObject
 	{
-		public string Name => name;
+		public string AuraName => auraName;
 		public string Description => description;
 		public Sprite Icon => icon;
 		public float Duration => duration;
 		public int StackLimit => stackLimit;
 
-		[SerializeField] protected string name;
+		[SerializeField] protected string auraName;
 		[TextArea(3,10)]
 		[SerializeField] protected string description;
 		[SerializeField] protected Sprite icon;

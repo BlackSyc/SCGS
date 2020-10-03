@@ -30,7 +30,7 @@ namespace Syc.Combat.Auras.ScriptableObjects
 			}
 		}
 
-		public override void RemovedStack(AuraState state)
+		public override void Removed(AuraState state)
 		{
 			var attribute = state.Target.AttributeSystem.Get(attributeName);
 

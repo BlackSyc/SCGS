@@ -7,6 +7,8 @@ namespace Syc.Combat.Auras.ScriptableObjects
 	[CreateAssetMenu(menuName = "Spell System/Auras/Periodic Damage Aura")]
 	public class PeriodicDamageAura : Aura
 	{
+		[Header("Periodic Damage Aura")]
+		[Space]
 		[SerializeField] protected float baseDamage;
 		[SerializeField] protected bool allowMitigation;
 		[SerializeField] protected bool affectedBySpellPower;

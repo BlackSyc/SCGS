@@ -1,4 +1,6 @@
-﻿using Syc.Combat.HealthSystem;
+﻿using System.Linq;
+using Syc.Combat.HealthSystem;
+using Syc.Combat.SpellSystem.ScriptableObjects.Augments;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
@@ -25,6 +27,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			SpellCast spellCast = default,
 			SpellObject spellObject = default)
 		{
+			var damageAugments = caster.Augments
+				.OfType<DamageAugment>()
+				.Where(x => x.AppliesTo(spell))
+				.ToList();
+
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
 			var damageAmountFromRange = Random.Range(0f, 1f) * (damageCeiling - damageAmount) + damageAmount;
@@ -34,7 +41,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 		
 			if(canCrit)
 			{
-				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap())
+				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap() + damageAugments.Select(x => x.AddCritChance).Sum())
 				{
 					isCriticalStrike = true;
 					attributeMultiplier *= criticalStrikeMultiplier;
@@ -42,8 +49,17 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			}
 
 			var damageSource = caster.System.Origin.gameObject;
+			
+			var augmentMultiplier = !damageAugments.Any()
+				? 1
+				: damageAugments
+					.Select(x => x.MultiplyBaseDamage)
+					.Aggregate((x, y) => x * y);
+			
+			caster.RemoveAllAugments(damageAugments.Where(x => x.RemoveOnUse));
 
-			return new DamageRequest(damageAmountFromRange * attributeMultiplier,
+			return new DamageRequest(
+				damageAmountFromRange * attributeMultiplier * augmentMultiplier,
 				isCriticalStrike,
 				damageSource,
 				allowDamageMitigation

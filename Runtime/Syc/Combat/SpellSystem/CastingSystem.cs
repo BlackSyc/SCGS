@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Syc.Combat.SpellSystem.ScriptableObjects;
+using Syc.Combat.SpellSystem.ScriptableObjects.Augments;
 using UnityEngine;
 
 namespace Syc.Combat.SpellSystem
@@ -12,6 +15,8 @@ namespace Syc.Combat.SpellSystem
 		
 		public ICombatSystem System { get; set; }
 
+		public IEnumerable<Augment> Augments => _augments.Values.SelectMany(x => x);
+		
 		public Transform CastOrigin => castOrigin;
 		
 		public SpellCast CurrentSpellCast { get; private set; }
@@ -22,8 +27,9 @@ namespace Syc.Combat.SpellSystem
 
 		private float _timeSinceLastCast;
 
-		[SerializeField]
-		private Transform castOrigin;
+		private Dictionary<object, List<Augment>> _augments = new Dictionary<object, List<Augment>>();
+
+		[SerializeField] private Transform castOrigin;
 
 		[SerializeField] private float globalCooldown = 1f;
 
@@ -74,6 +80,60 @@ namespace Syc.Combat.SpellSystem
 		{
 			_timeSinceLastCast += deltaTime;
 			CurrentSpellCast?.Update(deltaTime);
+		}
+
+		public void AddAugment(object referenceObject, Augment augment)
+		{
+			if(referenceObject == default)
+				throw new ArgumentNullException($"{nameof(referenceObject)} can not be null.");
+			
+			if (_augments.TryGetValue(referenceObject, out var existingAugmentList))
+			{
+				existingAugmentList.Add(augment);
+			}
+			else
+			{
+				_augments.Add(referenceObject, new List<Augment>{ augment });
+			}
+		}
+
+		public void RemoveAugmentsFor(object referenceObject, Augment augment = default)
+		{
+			if(referenceObject == default)
+				throw new ArgumentNullException($"{nameof(referenceObject)} can not be null.");
+			
+			if (!_augments.TryGetValue(referenceObject, out var existingAugmentList))
+				return;
+
+			if (augment != default)
+			{
+				existingAugmentList.RemoveAll(x => x == augment);
+				return;
+			}
+
+			_augments.Remove(referenceObject);
+		}
+
+		public void RemoveAllAugments(IEnumerable<Augment> augments)
+		{
+			foreach (var augment in augments)
+			{
+				var valuesContainingAugment = _augments.Values.Where(x => x.Contains(augment));
+				foreach (var augmentList in valuesContainingAugment)
+				{
+					augmentList.RemoveAll(x => x == augment);
+				}
+			}
+
+			var emptyAugmentEntries = _augments
+				.Where(x => x.Value.Count < 1)
+				.Select(x => x.Key)
+				.ToList();
+
+			foreach (var emptyAugmentEntry in emptyAugmentEntries)
+			{
+				_augments.Remove(emptyAugmentEntry);
+			}	
 		}
 
 		private void SetCurrentSpellCast(SpellCast newSpellCast)

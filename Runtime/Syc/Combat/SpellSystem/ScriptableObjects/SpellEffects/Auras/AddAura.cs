@@ -9,22 +9,45 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Auras
 	public class AddAura : SpellEffect
 	{
 		[SerializeField] private Aura aura;
+		
+		[SerializeField] private ApplyTo applyTo;
 
+		[Space]
 		[SerializeField] private bool useSpellAsReferenceObject;
 		
 		public override void Execute(ICaster source, Target target, Spell spell, SpellCast spellCast = default, SpellObject spellObject = default)
 		{
-			if (!target.IsCombatTarget)
-				return;
-
-			if (target.CombatSystem.Has(out AuraSystem auraSystem))
+			if (applyTo == ApplyTo.Target)
 			{
-				auraSystem.AddAura(aura, 
-					source, 
-					useSpellAsReferenceObject 
-					? spell 
-					: (object)source);
+				if (!target.IsCombatTarget)
+					return;
+
+				if (target.CombatSystem.Has(out AuraSystem auraSystem))
+				{
+					auraSystem.AddAura(aura,
+						source,
+						useSpellAsReferenceObject
+							? spell
+							: (object) source);
+				}
+			}
+			else
+			{
+				if (source.System.Has(out AuraSystem auraSystem))
+				{
+					auraSystem.AddAura(aura,
+						source,
+						useSpellAsReferenceObject
+							? spell
+							: (object) source);
+				}
 			}
 		}
+	}
+
+	public enum ApplyTo
+	{
+		Caster,
+		Target
 	}
 }
