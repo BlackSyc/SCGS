@@ -23,6 +23,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 
 		public bool CastWhileMoving => castWhileMoving;
 
+		public bool OnGlobalCooldown => onGlobalCooldown;
+
 		public IEnumerable<SpellEffect> SpellEffects => spellEffects;
 		
 		[SerializeField] protected string spellName;
@@ -41,7 +43,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		[SerializeField] 
 		protected float coolDown;
 
-		[SerializeField] protected bool globalCooldown;
+		[SerializeField] protected bool onGlobalCooldown;
 
 		[SerializeField] protected bool castWhileMoving;
 		
@@ -67,7 +69,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		{
 			spellCast = default;
 			
-			if(globalCooldown && caster.GlobalCooldownIsActive)
+			if(onGlobalCooldown && caster.GlobalCooldownIsActive)
 				return CreateSpellCastResult.Failed(CastFailedReason.OnGlobalCoolDown, spellState);
 			
 			if (coolDown > 0 && spellState.CoolDownUntil > Time.time)

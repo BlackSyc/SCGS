@@ -12,6 +12,8 @@ namespace Syc.Combat.SpellSystem
 	{
 		public event Action<SpellCast> OnNewSpellCast;
 		public event Action<Spell, CastFailedReason> OnCastFailed;
+		public event Action<float> OnGlobalCooldownStarted;
+		public event Action OnGlobalCooldownCancelled;
 		
 		public ICombatSystem System { get; set; }
 
@@ -21,11 +23,11 @@ namespace Syc.Combat.SpellSystem
 		
 		public SpellCast CurrentSpellCast { get; private set; }
 
-		public bool GlobalCooldownIsActive => globalCooldown == 0f || _timeSinceLastCast < GlobalCooldown;
+		public bool GlobalCooldownIsActive => _globalCooldownRemaining > 0;
 
 		public float GlobalCooldown => globalCooldown * System.AttributeSystem.Haste.Remap();
 
-		private float _timeSinceLastCast;
+		private float _globalCooldownRemaining;
 
 		private Dictionary<object, List<Augment>> _augments = new Dictionary<object, List<Augment>>();
 
@@ -58,6 +60,11 @@ namespace Syc.Combat.SpellSystem
 				SetCurrentSpellCast(newSpellCast);
 				OnNewSpellCast?.Invoke(CurrentSpellCast);
 				CurrentSpellCast.Start();
+				if (result.SpellState.Spell.OnGlobalCooldown)
+				{
+					_globalCooldownRemaining = GlobalCooldown;
+					OnGlobalCooldownStarted?.Invoke(_globalCooldownRemaining);
+				}
 			}
 			else
 			{
@@ -78,7 +85,7 @@ namespace Syc.Combat.SpellSystem
 		
 		public void Tick(float deltaTime)
 		{
-			_timeSinceLastCast += deltaTime;
+			_globalCooldownRemaining -= deltaTime;
 			CurrentSpellCast?.Update(deltaTime);
 		}
 
@@ -140,11 +147,20 @@ namespace Syc.Combat.SpellSystem
 		{
 			CurrentSpellCast?.Cancel(CancelCastReason.CastReplaced);
 
-			newSpellCast.OnSpellCompleted += _ => _timeSinceLastCast = 0;
 			newSpellCast.OnSpellCompleted += RemoveCurrentSpellCast;
+			newSpellCast.OnSpellCancelled += ResetGlobalCooldown;
 			newSpellCast.OnSpellCancelled += RemoveCurrentSpellCast;
 
 			CurrentSpellCast = newSpellCast;
+		}
+
+		private void ResetGlobalCooldown(SpellCast spellCast)
+		{
+			if (!spellCast.Spell.OnGlobalCooldown || !GlobalCooldownIsActive)
+				return;
+
+			_globalCooldownRemaining = 0;
+			OnGlobalCooldownCancelled?.Invoke();
 		}
 
 		private void RemoveCurrentSpellCast(SpellCast currentSpellCast)
