@@ -2,10 +2,10 @@
 using Syc.Combat.HealthSystem;
 using UnityEngine;
 
-namespace Syc.Combat.ModifierSystem.ScriptableObjects
+namespace Syc.Combat.Auras.ScriptableObjects
 {
-	[CreateAssetMenu(menuName = "Spell System/Modifiers/Periodic Damage Modifier")]
-	public class PeriodicDamageModifier : Modifier
+	[CreateAssetMenu(menuName = "Spell System/Auras/Periodic Damage Aura")]
+	public class PeriodicDamageAura : Aura
 	{
 		[SerializeField] protected float baseDamage;
 		[SerializeField] protected bool allowMitigation;
@@ -14,17 +14,17 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 		[SerializeField] protected float critMultiplier;
 		[SerializeField] protected float period;
 		
-		public override void Applied(ModifierState state)
+		public override void Applied(AuraState state)
 		{
 			state.StartCoroutine(DamageCoroutine(state));
 		}
 
-		public override void Removed(ModifierState state)
+		public override void Removed(AuraState state)
 		{
 			state.CoroutineShouldStop = true;
 		}
 
-		private IEnumerator DamageCoroutine(ModifierState state)
+		private IEnumerator DamageCoroutine(AuraState state)
 		{
 			if (!state.Target.Has(out HealthSystem.HealthSystem healthSystem))
 				yield break;
@@ -36,7 +36,7 @@ namespace Syc.Combat.ModifierSystem.ScriptableObjects
 			}
 		}
 
-		protected virtual DamageRequest CreateDamageRequest(ModifierState state)
+		protected virtual DamageRequest CreateDamageRequest(AuraState state)
 		{
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;

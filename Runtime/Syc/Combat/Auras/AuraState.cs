@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections;
-using Syc.Combat.ModifierSystem.ScriptableObjects;
+using Syc.Combat.Auras.ScriptableObjects;
 using Syc.Combat.SpellSystem;
-using UnityEngine;
 
-namespace Syc.Combat.ModifierSystem
+namespace Syc.Combat.Auras
 {
 	[Serializable]
-	public class ModifierState
+	public class AuraState
 	{
 		public event Action<int> OnStackAdded;
 
 		public event Action<int> OnStackRemoved;
 		
-		public bool HasExpired => ElapsedTime > ModifierType.Duration;
-		public Modifier ModifierType { get; }
+		public bool HasExpired => ElapsedTime > AuraType.Duration;
+		public Aura AuraType { get; }
 		public int Stacks { get; set; }
 		public float ElapsedTime { get; set; }
 		public object ReferenceObject { get; }
@@ -23,9 +22,9 @@ namespace Syc.Combat.ModifierSystem
 		
 		public bool CoroutineShouldStop { get; set; }
 
-		public ModifierState(ICaster source, ICombatSystem target, Modifier modifier, object referenceObject)
+		public AuraState(ICaster source, ICombatSystem target, Aura aura, object referenceObject)
 		{
-			ModifierType = modifier;
+			AuraType = aura;
 			Source = source;
 			ReferenceObject = referenceObject;
 			Target = target;
@@ -40,25 +39,25 @@ namespace Syc.Combat.ModifierSystem
 		{
 			ElapsedTime = 0;
 			
-			if (Stacks >= ModifierType.StackLimit)
+			if (Stacks >= AuraType.StackLimit)
 				return;
 			
 			Stacks += 1;
-			ModifierType.AppliedStack(this);
+			AuraType.AppliedStack(this);
 			OnStackAdded?.Invoke(Stacks);
 		}
 
 		public void RemoveStack()
 		{
 			Stacks -= 1;
-			ModifierType.RemovedStack(this);
+			AuraType.RemovedStack(this);
 			OnStackRemoved?.Invoke(Stacks);
 		}
 
 		public void Apply()
 		{
 			AddStack();
-			ModifierType.Applied(this);
+			AuraType.Applied(this);
 		}
 
 		public void Remove()
@@ -69,7 +68,7 @@ namespace Syc.Combat.ModifierSystem
 				RemoveStack();
 			}
 			
-			ModifierType.Removed(this);
+			AuraType.Removed(this);
 		}
 
 		public void Tick(float deltaTime)
