@@ -48,8 +48,6 @@ namespace Syc.Core.System
 		{
 			_subsystems.Remove(subSystem);
 		}
-
-		public override void Tick(float deltaTime) { }
 	}
 
 	public class MonoSystemBase<T> : MonoSystemBase, ISubSystem<T>

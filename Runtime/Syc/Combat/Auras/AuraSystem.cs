@@ -13,6 +13,8 @@ namespace Syc.Combat.Auras
 		public event Action<AuraState> OnAuraRemoved;
 		public ICombatSystem System { get; set; }
 
+		public IEnumerable<AuraState> ActiveAuras => _activeAuras;
+
 		private List<AuraState> _activeAuras = new List<AuraState>();
 
 		public AuraState GetAura(Aura aura, object referenceObject)
@@ -62,6 +64,8 @@ namespace Syc.Combat.Auras
 			var completeAuras =  _activeAuras
 				.Where(x => x.HasExpired)
 				.ToList();
+			
+			completeAuras.AddRange(_activeAuras.Where(x => x.Stacks < 1));
 
 			foreach (var completeAura in completeAuras)
 			{

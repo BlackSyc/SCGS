@@ -10,5 +10,10 @@ namespace Syc.Combat.SpellSystem
 		public Target Target { get; set; }
 		public SpellCast SpellCast { get; set; }
 		public Spell Spell { get; set; }
+
+		public virtual void Initialize()
+		{
+			
+		}
 	}
 }

@@ -40,7 +40,7 @@ namespace Syc.Combat.SpellSystem
 
 		public void RemoveAll(Spell spell)
 		{
-			var spellStatesToRemove = spells.Where(x => x.Spell == spell);
+			var spellStatesToRemove = spells.Where(x => x?.Spell == spell);
 
 			foreach (var spellState in spellStatesToRemove)
 			{
@@ -54,7 +54,7 @@ namespace Syc.Combat.SpellSystem
 		{
 			var spellsCopy = new List<SpellState>(spells);
 
-			foreach (var spell in spellsCopy)
+			foreach (var spell in spellsCopy.Where(spell => spell != null))
 			{
 				RemoveAll(spell.Spell);
 			}

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects;
+using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Triggers;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace Syc.Combat.SpellSystem.SpellObjects
         [SerializeField] private float maxLifeTime = 10.0f;
 
         #region MonoBehaviour
-        protected virtual void Start()
+
+        public override void Initialize()
         {
             SpellCast.OnSpellCompleted += FlyToTarget;
             SpellCast.OnSpellCancelled += DestroyGameObject;
@@ -27,7 +29,7 @@ namespace Syc.Combat.SpellSystem.SpellObjects
             if (other.gameObject != Target.TargetObject)
                 return;
             
-            Spell.ExecuteAll(SpellEffectType.OnImpact, Source, new Target(Target.TargetObject, transform.position), SpellCast, this);
+            Spell.ExecuteAll(typeof(OnImpact), Source, new Target(Target.TargetObject, transform.position), SpellCast, this);
             DestroyGameObject(null);
         }
         

@@ -39,7 +39,7 @@ namespace Syc.Movement
             _characterController = GetComponent<CharacterController>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (!IsActive)
                 return;
@@ -54,12 +54,11 @@ namespace Syc.Movement
             localMovement.y = _upwardsMovement;
 
             if (!_characterController.isGrounded)
-                localMovement += Physics.gravity * Time.fixedDeltaTime;
+                localMovement += Physics.gravity * Time.deltaTime;
 
-            _upwardsMovement = localMovement.y;
-
-            _characterController.Move(localMovement * Time.fixedDeltaTime);
+            _characterController.Move(localMovement * Time.deltaTime);
             
+            _upwardsMovement = localMovement.y;
             _movementInput = Vector2.zero;
         }
         #endregion
@@ -67,7 +66,7 @@ namespace Syc.Movement
         #region Public Methods
         public void Move(Vector2 movementInput)
         {
-            _movementInput = movementInput;
+            _movementInput += movementInput;
         }
 
         public void Jump()

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Syc.Combat.Auras;
+using Syc.Combat.Auras.ScriptableObjects;
 using Syc.Combat.HealthSystem;
-using Syc.Combat.SpellSystem.ScriptableObjects.Augments;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
@@ -45,10 +47,13 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			SpellCast spellCast = default, 
 			SpellObject spellObject = default)
 		{
-			var healAugments = caster.Augments
-				.OfType<HealAugment>()
-				.Where(x => x.AppliesTo(spell))
-				.ToList();
+			var healAugments = !caster.System.Has(out AuraSystem auraSystem) 
+				? new List<(HealAugmentAura, AuraState)>() 
+				: auraSystem.ActiveAuras
+					.Where(x => x.AuraType.GetType() == typeof(HealAugmentAura))
+					.Select(auraState => ((HealAugmentAura)auraState.AuraType, auraState))
+					.Where(x => x.Item1.AppliesTo(spell))
+					.ToList();
 			
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
@@ -58,7 +63,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 
 			if(canCrit)
 			{
-				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap() + healAugments.Select(x => x.AddCritChance).Sum())
+				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap() 
+					+ healAugments.Select(x => x.Item1.CalculateCritChanceAddition(x.Item2)).Sum())
 				{
 					isCriticalStrike = true;
 					attributeMultiplier *= criticalStrikeMultiplier;
@@ -70,10 +76,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			var augmentMultiplier = !healAugments.Any()
 				? 1
 				: healAugments
-					.Select(x => x.MultiplyBaseHeal)
+					.Select(x => x.Item1.CalculateBaseHealMultiplier(x.Item2))
 					.Aggregate((x, y) => x * y);
-			
-			caster.RemoveAllAugments(healAugments.Where(x => x.RemoveOnUse));
+
+			foreach (var (healAugmentAura, auraState) in healAugments)
+				healAugmentAura.Used(auraState);
 
 			return new HealRequest(
 				healAmount * attributeMultiplier * augmentMultiplier,

@@ -15,13 +15,13 @@ namespace Syc.Combat
 			return StartCoroutine(coroutine);
 		}
 
-		protected void AddSubsystem(ISubSystem<ICombatSystem> subSystem)
+		public void AddSubsystem(ISubSystem<ICombatSystem> subSystem)
 		{
 			base.AddSubsystem(subSystem);
 			subSystem.System = this;
 		}
 
-		protected void RemoveSubsystem(ISubSystem<ICombatSystem> subSystem)
+		public void RemoveSubsystem(ISubSystem<ICombatSystem> subSystem)
 		{
 			base.RemoveSubsystem(subSystem);
 			subSystem.System = default;

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Syc.Core.System;
 using UnityEngine;
 
 namespace Syc.Combat
@@ -20,5 +21,9 @@ namespace Syc.Combat
 		bool Has<T>();
 
 		Coroutine ExecuteCoroutine(IEnumerator coroutine);
+
+		void AddSubsystem(ISubSystem<ICombatSystem> subSystem);
+
+		void RemoveSubsystem(ISubSystem<ICombatSystem> subSystem);
 	}
 }

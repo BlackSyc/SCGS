@@ -4,7 +4,7 @@ namespace Syc.Core.System
 {
 	public abstract class MonoSubSystem : MonoBehaviour, ISubSystem
 	{
-		public abstract void Tick(float deltaTime);
+		public virtual void Tick(float deltaTime){}
 	}
 
 	public abstract class MonoSubSystem<T> : MonoSubSystem, ISubSystem<T>

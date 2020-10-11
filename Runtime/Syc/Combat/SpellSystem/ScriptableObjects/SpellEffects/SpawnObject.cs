@@ -27,6 +27,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
+					newSpellObject.Initialize();
 					break;
 				case TargetType.SelfCastOrigin:
 					newSpellObject = Instantiate(spawn, source.CastOrigin);
@@ -34,6 +35,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
+					newSpellObject.Initialize();
 					break;
 				case TargetType.SelfOrigin:
 					newSpellObject = Instantiate(spawn, source.System.Origin);
@@ -41,6 +43,7 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects
 					newSpellObject.Target = target;
 					newSpellObject.SpellCast = spellCast;
 					newSpellObject.Spell = spell;
+					newSpellObject.Initialize();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

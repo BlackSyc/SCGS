@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Syc.Combat.Auras;
+using Syc.Combat.Auras.ScriptableObjects;
 using Syc.Combat.HealthSystem;
-using Syc.Combat.SpellSystem.ScriptableObjects.Augments;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
@@ -46,10 +48,13 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			SpellCast spellCast = default, 
 			SpellObject spellObject = default)
 		{
-			var damageAugments = caster.Augments
-				.OfType<DamageAugment>()
-				.Where(x => x.AppliesTo(spell))
-				.ToList();
+			var damageAugments = !caster.System.Has(out AuraSystem auraSystem) 
+				? new List<(DamageAugmentAura, AuraState)>() 
+				: auraSystem.ActiveAuras
+					.Where(x => x.AuraType.GetType() == typeof(DamageAugmentAura))
+					.Select(auraState => ((DamageAugmentAura)auraState.AuraType, auraState))
+					.Where(x => x.Item1.AppliesTo(spell))
+					.ToList();
 			
 			var attributeMultiplier = 1f;
 			var isCriticalStrike = false;
@@ -58,7 +63,8 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 				attributeMultiplier *= caster.System.AttributeSystem.SpellPower.Remap();
 			
 			if(canCrit){
-				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap() + damageAugments.Select(x => x.AddCritChance).Sum())
+				if (Random.Range(0f, 1f) < caster.System.AttributeSystem.CriticalStrikeRating.Remap() 
+					+ damageAugments.Select(x => x.Item1.CalculateCritChanceAddition(x.Item2)).Sum())
 				{
 					isCriticalStrike = true;
 					attributeMultiplier *= criticalStrikeMultiplier;
@@ -70,10 +76,11 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Health
 			var augmentMultiplier = !damageAugments.Any()
 				? 1
 				: damageAugments
-					.Select(x => x.MultiplyBaseDamage)
+					.Select(x => x.Item1.CalculateBaseDamageMultiplier(x.Item2))
 					.Aggregate((x, y) => x * y);
-			
-			caster.RemoveAllAugments(damageAugments.Where(x => x.RemoveOnUse));
+
+			foreach (var (damageAugmentAura, auraState) in damageAugments)
+				damageAugmentAura.Used(auraState);
 
 			return new DamageRequest(
 				damageAmount * attributeMultiplier * augmentMultiplier,
