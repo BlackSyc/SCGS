@@ -39,7 +39,7 @@ namespace Syc.Movement
             _characterController = GetComponent<CharacterController>();
         }
 
-        private void LateUpdate()
+        private void Update()
         {
             if (!IsActive)
                 return;
