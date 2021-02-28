@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects;
-using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Triggers;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 
@@ -29,7 +28,7 @@ namespace Syc.Combat.SpellSystem.SpellObjects
             if (other.gameObject != Target.TargetObject)
                 return;
             
-            Spell.ExecuteAll(typeof(OnImpact), Source, new Target(Target.TargetObject, transform.position), SpellCast, this);
+            Spell.ExecuteAll(SpellEffectTrigger.OnImpact, Source, new Target(Target.TargetObject, transform.position), SpellCast, this);
             DestroyGameObject(null);
         }
         

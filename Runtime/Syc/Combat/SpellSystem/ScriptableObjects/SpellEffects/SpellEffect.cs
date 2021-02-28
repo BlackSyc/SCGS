@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Triggers;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
 

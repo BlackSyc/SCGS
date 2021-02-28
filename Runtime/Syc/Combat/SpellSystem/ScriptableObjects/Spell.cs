@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Syc.Combat.SpellSystem.ScriptableObjects.CastingRequirements;
 using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects;
-using Syc.Combat.SpellSystem.ScriptableObjects.SpellEffects.Triggers;
 using Syc.Combat.SpellSystem.ScriptableObjects.TargetProviders;
 using Syc.Combat.TargetSystem;
 using UnityEngine;
@@ -94,9 +92,9 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 			return CreateSpellCastResult.Succeeded(spellState);
 		}
 
-		public void ExecuteAll(Type trigger, ICaster source, Target target, SpellCast spellCast = default, SpellObject spellObject = default)
+		public void ExecuteAll(SpellEffectTrigger trigger, ICaster source, Target target, SpellCast spellCast = default, SpellObject spellObject = default)
 		{
-			foreach (var effect in spellEffects.Where(x => x.Triggers.Any(y => y.GetType() == trigger)))
+			foreach (var effect in spellEffects.Where(x => x.Triggers.Any(y => y == trigger)))
 			{
 				effect.Execute(source, target, this, spellCast, spellObject);
 			}
@@ -105,12 +103,12 @@ namespace Syc.Combat.SpellSystem.ScriptableObjects
 		/// <summary>
 		///  Should be called from instance of SpellCast whenever the cast duration is completed.
 		/// </summary>
-		public void StartCast(SpellCast spellCast) => ExecuteAll(typeof(OnCastStarted), spellCast.Caster, spellCast.Target, spellCast);
+		public void StartCast(SpellCast spellCast) => ExecuteAll(SpellEffectTrigger.OnCastStarted, spellCast.Caster, spellCast.Target, spellCast);
 		
-		public void UpdateCast(SpellCast spellCast) => ExecuteAll(typeof(OnCastProgress), spellCast.Caster, spellCast.Target, spellCast);
+		public void UpdateCast(SpellCast spellCast) => ExecuteAll(SpellEffectTrigger.OnCastProgress, spellCast.Caster, spellCast.Target, spellCast);
 		
-		public void CompleteCast(SpellCast spellCast) => ExecuteAll(typeof(OnCastCompleted), spellCast.Caster, spellCast.Target, spellCast);
+		public void CompleteCast(SpellCast spellCast) => ExecuteAll(SpellEffectTrigger.OnCastCompleted, spellCast.Caster, spellCast.Target, spellCast);
 		
-		public void CancelCast(SpellCast spellCast) => ExecuteAll(typeof(OnCastCancelled), spellCast.Caster, spellCast.Target, spellCast);
+		public void CancelCast(SpellCast spellCast) => ExecuteAll(SpellEffectTrigger.OnCastCancelled, spellCast.Caster, spellCast.Target, spellCast);
 	}
 }
